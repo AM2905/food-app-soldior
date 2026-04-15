@@ -1,3 +1,15 @@
-body{
-    background-color: aqua;
+body {
+  background-color: aqua;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.app {
+width: 100%;
+  min-width: 340px; /* ← never shrink below this */
+  max-width: 390px;  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
 }
