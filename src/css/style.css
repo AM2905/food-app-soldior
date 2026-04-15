@@ -1,93 +1,89 @@
 @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap');
+.firstPage-container {
+  height: 100%;
+  width: 100%;
+background-image: url("../assets/firstbackground.svg");
+  background-size: cover;
+  background-position: center;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.oppeningPart-container{
+   height: 100%;
+  width: 100%;
+background-image: url("../assets/background-second-screen-soldior.svg");
+  background-size: cover;
+  background-position: center;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
-
-body {
-  font-family: 'Rubik', sans-serif;
-  overflow: hidden;
-  display: flex;
-  justify-content: center;
-  background-color: aqua;
-}
-
-/* ── shared container ── */
-.firstPage-container,
-.oppeningPart-container {
-  height: 100vh;
-  width: 100%;
-  max-width: 430px;
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-}
-
-.firstPage-container {
-  background-image: url("../assets/firstbackground.svg");
-  background-size: cover;
-  background-position: center;
-}
-
-.oppeningPart-container {
-  background-image: url("../assets/background-second-screen-soldior.svg");
-  background-size: cover;
-  background-position: center;
-}
-
-/* ── logo ── */
-.logo {
+.first-title{
   position: absolute;
-  top: 16px;
-  left: 16px;
-  width: 60px;
-}
-
-/* ── title ── */
-.first-title {
-  position: absolute;
-  top: 18%;
+  transform: translate(-50%,-50%);
+  top:20vh;
   left: 50%;
-  transform: translateX(-50%);
-  font-size: 28px;
-  color: #D42515;
+  font-size:4vmax;
+  color:#D42515;
   direction: rtl;
   white-space: nowrap;
   font-weight: bold;
-  text-align: center;
 }
-
-/* ── buttons ── */
-.start-button,
-.next-button {
+.logo{
   position: absolute;
-  padding: 14px 44px;
-  font-size: 18px;
+  top:2vh;
+  left: 2vw;;
+}
+body {
+   font-family: 'Rubik', sans-serif;
+  overflow: hidden;
+}
+.start-button {
+  position: relative;
+  padding: 15px 45px;
+  font-size: 20px;
   border: none;
   border-radius: 50px;
+
   background-color: #E3F4FF;
   color: #4890C6;
   font-weight: bold;
+  top:20vh;
   cursor: pointer;
   box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-  transition: transform 0.2s;
-  font-family: 'Rubik', sans-serif;
+  transition: 0.2s;
 }
 
-.start-button {
-  bottom: 18%;
+
+.next-button{
+   position: relative;
+  padding: 15px 45px;
+  font-size: 20px;
+  border: none;
+  border-radius: 50px;
+
+  background-color: #E3F4FF;
+  color: #4890C6;
+  font-weight: bold;
+  bottom:-45vh;
+  left:-30vw;
+  cursor: pointer;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  transition: 0.2s;
 }
 
-.next-button {
-  bottom: 8%;
-  right: 8%;
-}
 
-.start-button:hover,
-.next-button:hover {
+
+.start-button:hover {
   transform: scale(1.05);
 }
