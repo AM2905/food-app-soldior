@@ -92,7 +92,7 @@ export default function OpeningPart({ onNext }) {
         ref={videoRef}
         src={videoFile}
         playsInline
-        muted
+        
         preload="auto"
         onTimeUpdate={handleTimeUpdate}
         onEnded={handleVideoEnded}
