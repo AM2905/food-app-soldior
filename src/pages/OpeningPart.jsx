@@ -204,9 +204,9 @@ export default function OpeningPart({ onNext }) {
       {showFinalScreen && (
         <>
           <div style={{
-            position: "absolute", top: "12%", width: "100%",
+            position: "absolute", top: "12%", width: "82%",
             textAlign: "center", fontWeight: "bold",
-            color: "#5791EF", fontSize: "140%", zIndex: 2
+            color: "#5791EF", fontSize: "140%", zIndex: 2,direction:"rtl"
           }}>
             {buttonClicked
               ? "תוכלו לעזור לי ללמוד איך לאכול טוב, בשביל שיהיה לי כוח לסחוב את האוכל לקן?"
