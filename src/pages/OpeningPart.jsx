@@ -30,7 +30,7 @@ export default function OpeningPart({ onNext }) {
   const triggerVideoEnd = () => {
     if (videoEndedRef.current) return;
     videoEndedRef.current = true;
-    log("✅ triggerVideoEnd called");
+    log("✅ triggerVideoEnd");
     if (fallbackTimerRef.current) {
       clearTimeout(fallbackTimerRef.current);
       fallbackTimerRef.current = null;
@@ -38,19 +38,17 @@ export default function OpeningPart({ onNext }) {
     const v = videoRef.current;
     if (v) v.pause();
     setVideoEnded(true);
+    log("✅ setVideoEnded(true) called");
   };
 
   const handleTimeUpdate = () => {
     const v = videoRef.current;
     if (!v) return;
-    if (v.currentTime >= 46) {
-      log("⏱ timeUpdate hit 46s");
-      triggerVideoEnd();
-    }
+    if (v.currentTime >= 46) triggerVideoEnd();
   };
 
   const handleVideoEnded = () => {
-    log("🎬 onEnded fired");
+    log("🎬 onEnded");
     triggerVideoEnd();
   };
 
@@ -68,18 +66,15 @@ export default function OpeningPart({ onNext }) {
     try {
       await video.play();
       log("▶️ play() ok");
-
       const targetTime = Math.min(46, video.duration || 46);
       const msUntilTarget = (targetTime - (video.currentTime || 0)) * 1000;
       log(`⏳ timer: ${Math.round(msUntilTarget / 1000)}s`);
-
       fallbackTimerRef.current = setTimeout(() => {
         log("⏰ setTimeout fired");
         triggerVideoEnd();
       }, msUntilTarget + 500);
-
     } catch (e) {
-      log("❌ play failed: " + e);
+      log("❌ " + e);
     }
   };
 
@@ -106,9 +101,9 @@ export default function OpeningPart({ onNext }) {
           opacity: started && !showNextScreen ? 1 : 0,
           transition: "opacity 0.4s ease",
           position: "absolute",
-          width: "100%",
-          height: "100%",
-          objectFit: "cover"
+          width: "100%", height: "100%",
+          objectFit: "cover",
+          zIndex: 0
         }}
       />
 
@@ -116,14 +111,14 @@ export default function OpeningPart({ onNext }) {
         backgroundImage: `url(${thirdBg})`,
         opacity: showNextScreen && !showFinalScreen ? 1 : 0,
         transition: "opacity 0.4s ease",
-        position: "absolute", width: "100%", height: "100%"
+        position: "absolute", width: "100%", height: "100%", zIndex: 0
       }} />
 
       <div className="background-image" style={{
         backgroundImage: `url(${finalBg})`,
         opacity: showFinalScreen ? 1 : 0,
         transition: "opacity 0.4s ease",
-        position: "absolute", width: "100%", height: "100%"
+        position: "absolute", width: "100%", height: "100%", zIndex: 0
       }} />
 
       {/* START */}
@@ -133,47 +128,74 @@ export default function OpeningPart({ onNext }) {
         </button>
       )}
 
-      {/* 🔍 DEBUG LOG */}
+      {/* DEBUG LOG */}
       {started && !videoEnded && (
         <div style={{
           position: "absolute", top: 0, left: 0, right: 0,
           background: "rgba(0,0,0,0.75)", color: "lime",
-          fontSize: "12px", padding: "8px", zIndex: 999,
-          whiteSpace: "pre-wrap", maxHeight: "35%", overflowY: "auto",
-          direction: "ltr"
+          fontSize: "12px", padding: "8px", zIndex: 9999,
+          whiteSpace: "pre-wrap", maxHeight: "40%", overflowY: "auto",
+          direction: "ltr", pointerEvents: "none"
         }}>
           {debugLog || "waiting..."}
         </div>
       )}
 
-      {/* 🚨 SKIP BUTTON - always visible while video plays */}
+      {/* SKIP BUTTON */}
       {started && !videoEnded && (
         <button
-          onClick={() => { log("🚨 skip tapped"); triggerVideoEnd(); }}
+          onClick={() => { log("🚨 skip"); triggerVideoEnd(); }}
           style={{
-            position: "absolute", bottom: "8%", right: "5%",
-            zIndex: 999, background: "rgba(200,0,0,0.8)",
-            color: "white", border: "none", borderRadius: "10px",
-            padding: "10px 16px", fontSize: "15px"
+            position: "fixed",  // ← fixed במקום absolute
+            bottom: "10%", right: "5%",
+            zIndex: 9999,
+            background: "red",
+            color: "white", border: "3px solid white",
+            borderRadius: "10px",
+            padding: "12px 20px", fontSize: "16px",
+            touchAction: "manipulation"
           }}
         >
           דלג ←
         </button>
       )}
 
-      {/* AFTER VIDEO BUTTON */}
+      {/* ✅ AFTER VIDEO - כפתור המשך עם fixed position */}
       {videoEnded && !showNextScreen && (
-        <button onClick={handleContinue} className="next-button" style={{ left: "33%" }}>
+        <button
+          onClick={handleContinue}
+          style={{
+            position: "fixed",   // ← fixed במקום absolute
+            bottom: "10%",
+            left: "50%",
+            transform: "translateX(-50%)",
+            zIndex: 9999,
+            padding: "16px 40px",
+            fontSize: "20px",
+            fontWeight: "bold",
+            background: "#E3F4FF",
+            color: "#4890C6",
+            border: "none",
+            borderRadius: "50px",
+            boxShadow: "0 5px 15px rgba(0,0,0,0.3)",
+            direction: "rtl",
+            touchAction: "manipulation"
+          }}
+        >
           המשך
         </button>
       )}
 
       {/* SECOND SCREEN BUTTON */}
       {showNextScreen && !showFinalScreen && (
-        <button onClick={handleFinalContinue} className="next-button" style={{
-          left: "50%", width: "100%", height: "24%",
-          bottom: "-7%", paddingBottom: "9%", fontSize: "140%"
-        }}>
+        <button
+          onClick={handleFinalContinue}
+          className="next-button"
+          style={{
+            left: "50%", width: "100%", height: "24%",
+            bottom: "-7%", paddingBottom: "9%", fontSize: "140%"
+          }}
+        >
           בואו תראו מה קרה לה...
         </button>
       )}
@@ -184,7 +206,7 @@ export default function OpeningPart({ onNext }) {
           <div style={{
             position: "absolute", top: "12%", width: "100%",
             textAlign: "center", fontWeight: "bold",
-            color: "#5791EF", fontSize: "140%", zIndex: "2"
+            color: "#5791EF", fontSize: "140%", zIndex: 2
           }}>
             {buttonClicked
               ? "תוכלו לעזור לי ללמוד איך לאכול טוב, בשביל שיהיה לי כוח לסחוב את האוכל לקן?"
