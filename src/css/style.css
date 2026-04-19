@@ -31,9 +31,9 @@ background-image: url("../assets/background-second-screen-soldior.svg");
 .first-title{
   position: absolute;
   transform: translate(-50%,-50%);
-  top:20vh;
+  top:20%;
   left: 50%;
-  font-size:4vmax;
+  font-size:200%;
   color:#D42515;
   direction: rtl;
   white-space: nowrap;
@@ -41,8 +41,8 @@ background-image: url("../assets/background-second-screen-soldior.svg");
 }
 .logo{
   position: absolute;
-  top:2vh;
-  left: 2vw;;
+  top:3%;
+  left: 3%;;
 }
 body {
    font-family: 'Rubik', sans-serif;
@@ -50,7 +50,7 @@ body {
 }
 .start-button {
   position: relative;
-  padding: 15px 45px;
+  padding: 4% 12%;
   font-size: 20px;
   border: none;
   border-radius: 50px;
@@ -58,16 +58,107 @@ body {
   background-color: #E3F4FF;
   color: #4890C6;
   font-weight: bold;
-  top:20vh;
+  top:25%;
   cursor: pointer;
   box-shadow: 0 5px 15px rgba(0,0,0,0.3);
   transition: 0.2s;
 }
 
+.oppeningPart-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
 
-.next-button{
-   position: relative;
-  padding: 15px 45px;
+/* VIDEO */
+.background-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  z-index: 0;
+}
+
+/* IMAGE AFTER VIDEO */
+.background-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 100%;
+
+  background-size: cover;
+  background-position: center;
+
+  z-index: 0;
+}
+
+/* START BUTTON */
+.start-button {
+  position: relative;
+  z-index: 2;
+}
+
+/* NEXT BUTTON */
+.next-button {
+  position: absolute;
+  bottom: 10vh;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+}
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Rubik', sans-serif;
+  overflow: hidden;
+}
+
+/* PAGE */
+.oppeningPart-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* VIDEO + IMAGE */
+.background-video,
+.background-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  background-size: cover;
+  background-position: center;
+}
+
+/* START BUTTON */
+.start-button {
+  direction: rtl;
+  position: relative;
+  z-index: 2;
+
+  padding: 4% 12%;
   font-size: 20px;
   border: none;
   border-radius: 50px;
@@ -75,15 +166,47 @@ body {
   background-color: #E3F4FF;
   color: #4890C6;
   font-weight: bold;
-  bottom:-45vh;
-  left:-30vw;
+
   cursor: pointer;
   box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-  transition: 0.2s;
 }
 
-
-
-.start-button:hover {
-  transform: scale(1.05);
+/* NEXT BUTTON */
+.next-button {
+    direction: rtl;
+    position: absolute;
+    bottom: 3vh;
+    left: 22%;
+    font-weight: bold;
+    transform: translateX(-50%);
+    z-index: 2;
+    padding: 3% 10%;
+    border: none;
+    border-radius: 50px;
+    background-color: #E3F4FF;
+    color: #4890C6;
+    font-size: 139%;
+    font-weight: bolder;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+.special-button {
+    direction: rtl;
+    position: absolute;
+    bottom: -2%;
+    left: 50%;
+    font-weight: bold;
+    transform: translateX(-50%);
+    z-index: 2;
+    width: 109%;
+    height: 19%;
+    padding: 3% 10%;
+    border: none;
+    border-radius: 50px;
+    background-color: #E3F4FF;
+    color: #4890C6;
+    font-size: 136%;
+    font-weight: bolder;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
