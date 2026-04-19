@@ -2,47 +2,82 @@ import { useState, useRef, useEffect } from "react";
 import "../css/style.css";
 import videoFile from "../assets/video.mp4";
 import thirdBg from "../assets/after-video.svg";
-import finalBg from "../assets/ant-talks-background.svg"; // 👈 NEW BACKGROUND
-import talkingBubble from "../assets/talking-bubble.svg"; 
+import finalBg from "../assets/ant-talks-background.svg";
+import talkingBubble from "../assets/talking-bubble.svg";
 
 export default function OpeningPart({ onNext }) {
   const [started, setStarted] = useState(false);
   const [videoEnded, setVideoEnded] = useState(false);
   const [showNextScreen, setShowNextScreen] = useState(false);
-  const [showFinalScreen, setShowFinalScreen] = useState(false); // ⭐ NEW
-  const [buttonClicked, setButtonClicked] = useState(false); // ⭐ NEW - כפתור נלחץ
+  const [showFinalScreen, setShowFinalScreen] = useState(false);
+  const [buttonClicked, setButtonClicked] = useState(false);
 
   const videoRef = useRef(null);
-  const intervalRef = useRef(null);
+  const videoEndedRef = useRef(false);
+  const fallbackTimerRef = useRef(null);
 
   useEffect(() => {
     const img = new Image();
     img.src = thirdBg;
   }, []);
 
+  const triggerVideoEnd = () => {
+    if (videoEndedRef.current) return;
+    videoEndedRef.current = true;
+
+    // clear fallback timer if it exists
+    if (fallbackTimerRef.current) {
+      clearTimeout(fallbackTimerRef.current);
+      fallbackTimerRef.current = null;
+    }
+
+    const v = videoRef.current;
+    if (v) v.pause();
+    setVideoEnded(true);
+  };
+
+  // ✅ Primary: fires as video plays
+  const handleTimeUpdate = () => {
+    const v = videoRef.current;
+    if (!v) return;
+    if (v.currentTime >= 46) {
+      triggerVideoEnd();
+    }
+  };
+
+  // ✅ Fallback 1: video ends naturally
+  const handleVideoEnded = () => {
+    triggerVideoEnd();
+  };
+
+  // ✅ Fallback 2: video metadata loaded — we know exact duration, set a precise timer
+  const handleLoadedMetadata = () => {
+    const v = videoRef.current;
+    if (!v) return;
+
+    const targetTime = Math.min(46, v.duration);
+    const msUntilEnd = (targetTime / v.playbackRate) * 1000;
+
+    // We'll start the timer when play begins (see handleStart)
+    videoRef.current._targetMs = msUntilEnd;
+  };
+
   const handleStart = async () => {
     setStarted(true);
-
     const video = videoRef.current;
     if (!video) return;
 
     try {
       await video.play();
 
-      intervalRef.current = setInterval(() => {
-        const v = videoRef.current;
-        if (!v) return;
+      // ✅ Fallback 3: setTimeout based on video duration (Safari-safe)
+      const targetTime = Math.min(46, video.duration || 46);
+      const msUntilTarget = (targetTime - (video.currentTime || 0)) * 1000;
 
-        if (v.currentTime >= 46) {
-          v.pause();
-          v.currentTime = 46;
+      fallbackTimerRef.current = setTimeout(() => {
+        triggerVideoEnd();
+      }, msUntilTarget + 500); // +500ms buffer
 
-          clearInterval(intervalRef.current);
-          intervalRef.current = null;
-
-          setVideoEnded(true);
-        }
-      }, 100);
     } catch (e) {
       console.log("play failed", e);
     }
@@ -52,17 +87,15 @@ export default function OpeningPart({ onNext }) {
     setShowNextScreen(true);
   };
 
-  // ⭐ HANDLER (second button click)
   const handleFinalContinue = () => {
     setShowFinalScreen(true);
   };
 
-  // ⭐ NEW HANDLER - לחיצה על כפתור במסך הסופי
   const handleButtonClick = () => {
     if (buttonClicked) {
-      onNext(); // לדף הבא
+      onNext();
     } else {
-      setButtonClicked(true); // שינוי הכפתור
+      setButtonClicked(true);
     }
   };
 
@@ -76,6 +109,9 @@ export default function OpeningPart({ onNext }) {
         playsInline
         muted
         preload="auto"
+        onTimeUpdate={handleTimeUpdate}
+        onEnded={handleVideoEnded}
+        onLoadedMetadata={handleLoadedMetadata}
         style={{
           opacity: started && !showNextScreen ? 1 : 0,
           transition: "opacity 0.4s ease",
@@ -119,13 +155,12 @@ export default function OpeningPart({ onNext }) {
         </button>
       )}
 
-      {/* 🔥 FIRST BUTTON */}
+      {/* 🔥 FIRST BUTTON - after video */}
       {videoEnded && !showNextScreen && (
         <button
           onClick={handleContinue}
           className="next-button"
-           style={{
-              left: "33%"}}
+          style={{ left: "33%" }}
         >
           המשך
         </button>
@@ -136,13 +171,14 @@ export default function OpeningPart({ onNext }) {
         <button
           onClick={handleFinalContinue}
           className="next-button"
-           style={{
-             left: "50%",
-    width: "100%",
-    height: "24%",
-    bottom: "-7%",
-    paddingBottom: "9%",
-    fontSize: "140%"}}
+          style={{
+            left: "50%",
+            width: "100%",
+            height: "24%",
+            bottom: "-7%",
+            paddingBottom: "9%",
+            fontSize: "140%"
+          }}
         >
           בואו תראו מה קרה לה...
         </button>
@@ -157,26 +193,20 @@ export default function OpeningPart({ onNext }) {
               top: "12%",
               width: "100%",
               textAlign: "center",
-              color: "white",
-              fontSize: "140%",
               fontWeight: "bold",
-              color:"#5791EF",
-              zIndex:"2"
-          
+              color: "#5791EF",
+              fontSize: "140%",
+              zIndex: "2"
             }}
           >
-                        {buttonClicked ? "תוכלו לעזור לי ללמוד איך לאכול טוב, בשביל שיהיה לי כוח לסחוב את האוכל לקן?" : " לאחרונה אני מרגישה עייפות וכאבים, אולי בגלל שאני לא אוכלת נכון.."}
+                        {buttonClicked ? "תוכלו לעזור לי ללמוד איך לאכול טוב, בשביל שיהיה לי כוח לסחוב את האוכל לקן?" : "  לאחרונה אני מרגישה עייפות וכאבים, אולי בגלל שאני לא אוכלת נכון.."}
 
           
           </div>
-                  <img style={{width:"93%",top:"4%"}} src={talkingBubble} className="logo" />
-            
-          {/* ⭐ כפתור שמשתנה לאחר לחיצה */}
-          <button
-            onClick={handleButtonClick}
-            className="special-button"
-          >
-            {buttonClicked ? "המשך לדף הבא" : "לחצו בשביל להמשיך"}
+          <img style={{ width: "93%", top: "4%" }} src={talkingBubble} className="logo" />
+
+          <button onClick={handleButtonClick} className="special-button">
+            {buttonClicked ? "כן ברור שנעזור!" : "לחצו בשביל להמשיך"}
           </button>
         </>
       )}
