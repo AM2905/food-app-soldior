@@ -9,9 +9,13 @@ import bread from "../assets/food-bread.svg";
 import snack from "../assets/food-snack.svg";
 import check from "../assets/check-mark.svg";
 
-const PLACEHOLDER_CIRCLES = null;
-const PLACEHOLDER_PROTEIN  = null;
-const PLACEHOLDER_CARBS    = null;
+import circlesImg from "../assets/meal-img.svg";
+import carbsImg from "../assets/carbs-img.svg";
+import protienImg from "../assets/protien-img.svg";
+
+const PLACEHOLDER_CIRCLES = circlesImg;
+const PLACEHOLDER_PROTEIN  = protienImg;
+const PLACEHOLDER_CARBS    = carbsImg;
 
 export default function GoodEatingPage({ onNext }) {
   const [selected, setSelected]       = useState(null);
@@ -90,7 +94,8 @@ export default function GoodEatingPage({ onNext }) {
           <div className="sheet-content" dir="rtl">
             <img src={snack} className="sheet-food-img" alt="" />
             <div className="sheet-red-bar">לא מחליפות ארוחה בחטיפים</div>
-            <p className="sheet-text">חטיף הוא לא תחליף לארוחה. הגוף שלך צריך ארוחה אמיתית כדי לקבל אנרגיה ולתפקד לאורך זמן.</p>
+            <p className="sheet-text">חטיף הוא לא תחליף לארוחה.
+               הגוף שלך צריך ארוחה אמיתית כדי לקבל אנרגיה ולתפקד לאורך זמן.</p>
           </div>
         );
       case "protein":
@@ -107,7 +112,8 @@ export default function GoodEatingPage({ onNext }) {
               <>
                 <p className="sheet-text">נסי לשלב מקור חלבון בכל ארוחה</p>
                 {PLACEHOLDER_PROTEIN
-                  ? <img src={PLACEHOLDER_PROTEIN} className="sheet-extra-img" alt="" />
+                  ? <img src={PLACEHOLDER_PROTEIN} style={{    left: "1vh",
+    bottom: "3vh"}}className="sheet-extra-img" alt="" />
                   : <div className="placeholder-img">[ תמונת חלבון ]</div>}
                 <button className="sheet-btn sheet-btn-left" onClick={() => setFlipped(false)}>→ חזור</button>
               </>
@@ -127,7 +133,9 @@ export default function GoodEatingPage({ onNext }) {
             ) : (
               <>
                 {PLACEHOLDER_CARBS
-                  ? <img src={PLACEHOLDER_CARBS} className="sheet-extra-img" alt="" />
+                  ? <img src={PLACEHOLDER_CARBS} className="sheet-extra-img" style={{    left: "-3vh",
+    width: "61%",
+    bottom: "2vh"}} alt="" />
                   : <div className="placeholder-img">[ תמונת פחמימות ]</div>}
                 <button className="sheet-btn sheet-btn-left" onClick={() => setFlipped(false)}>→ חזור</button>
               </>
