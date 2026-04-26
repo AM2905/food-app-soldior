@@ -1,0 +1,257 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap');
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Rubik', sans-serif; overflow: hidden; }
+
+/* ── רקע ── */
+.goodEating-container {
+  height: 100%;
+  width: 100%;
+  background-image: url("../assets/background-good-eating.svg");
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── כותרת ── */
+.up-title {
+  color: #4890C6;
+  font-size: clamp(23px, 8vw, 32px);
+  top: 3%;
+  left: 15%;
+  position: absolute;
+  z-index: 2;
+  font-weight: bolder;
+  white-space: nowrap;
+}
+
+/* ── חלק עליון ── */
+.upPart {
+  filter: drop-shadow(0px 4px 10px rgba(0,0,0,0.2));
+  position: absolute;
+  width: 122%;
+  top: -2%;
+  left: -12%;
+  z-index: 1;
+}
+
+/* ── wrapper אוכל ── */
+.food-wrapper {
+  position: absolute;
+  cursor: pointer;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.food {
+  width: 68%;
+  display: block;
+  cursor: pointer;
+  filter: drop-shadow(0px 4px 10px rgba(0,0,0,0.2));
+}
+
+.check-icon {
+    position: absolute;
+    top: 9px;
+    right: 0;
+    width: 67%;
+    height: 25%;
+    transform: translate(30%, -30%);
+    z-index: 0;
+}
+
+/* ── pulse ── */
+@keyframes pulse {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+.pulse { animation: pulse 0.8s ease-in-out infinite; }
+
+/* ── overlay ── */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 100;
+}
+
+.drag-handle-wrapper {
+  width: 100%;
+  padding: 16px 0 8px;
+  display: flex;
+  justify-content: center;
+  cursor: grab;
+}
+/* ── bottom sheet ── */
+.bottom-sheet {
+  width: 100%;
+  max-width: 390px;
+  background: #E3F4FF;
+  border-radius: 24px 24px 0 0;
+  height: 75%;        /* ✅ גובה קבוע לכולם */
+  overflow-x: hidden;
+  overflow-y: auto;
+  animation: slideUp 0.35s ease-out;
+  padding-bottom: env(safe-area-inset-bottom, 16px);
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
+
+/* ── ידית גרירה ── */
+.drag-handle {
+  width: 40px;
+  height: 4px;
+  background: #aac8e0;
+  border-radius: 2px;
+  margin: 12px auto 4px;
+}
+
+/* ── תוכן ה-sheet ── */
+.sheet-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 20px 24px;
+  gap: 14px;
+  direction: rtl;
+}
+
+/* תמונת האוכל בפופאפ */
+.sheet-food-img {
+  width: 38%;
+  max-width: 200px;
+  margin-top: 8px;
+  filter: drop-shadow(0px 4px 10px rgba(0,0,0,0.15));
+}
+
+/* פס אדום עם כותרת */
+.sheet-red-bar {
+    width: 115%;
+    background: #C0392B;
+    color: white;
+    /* font-size: clamp(12px, 12vmin, 22px); */
+    font-weight: bold;
+    text-align: center;
+    padding: 10px 16px;
+    border-radius: 8px;
+    direction: rtl;
+    white-space: nowrap;
+    /* border: solid 8px white; */
+    /* overflow: hidden; */
+    border-top: 8px solid white;
+    border-bottom: 8px solid white;
+}
+
+@keyframes slideDown {
+  from { transform: translateY(0); }
+  to   { transform: translateY(100%); }
+}
+
+.slide-down {
+  animation: slideDown 0.3s ease-in forwards;
+}
+
+/* טקסט */
+.sheet-text {
+  font-size: clamp(14px, 4vw, 18px);
+      color: #365582;
+    text-align: center;
+    line-height: 1.6;
+    direction: rtl;
+    font-weight: bolder;
+}
+
+/* תמונה נוספת */
+.sheet-extra-img {
+  width: 90%;
+  max-width: 320px;
+  border-radius: 12px;
+}
+
+/* placeholder תמונה */
+.placeholder-img {
+  width: 90%;
+  max-width: 320px;
+  height: 120px;
+  background: #c8dff0;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #4890C6;
+  font-size: 14px;
+  font-style: italic;
+}
+
+/* כפתור המשך */
+.sheet-btn {
+  background: #4890C6;
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 10px 28px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  align-self: flex-end;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  touch-action: manipulation;
+  font-family: 'Rubik', sans-serif;
+}
+
+/* כפתור חזור — שמאל */
+.sheet-btn-left {
+  align-self: flex-start;
+}
+.drag-handle-wrapper {
+  width: 100%;
+  padding: 20px 0 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: grab;
+  user-select: none;
+  gap: 6px;
+}
+
+.drag-hint {
+  font-size: 11px;
+  color: #aac8e0;
+  font-family: 'Rubik', sans-serif;
+}
+
+.bottom-sheet {
+  width: 100%;
+  max-width: 390px;
+  background: #E3F4FF;
+  border-radius: 24px 24px 0 0;
+  height: 75vh;          /* ✅ vh במקום % */
+  min-height: 75vh;      /* ✅ לא מתכווץ */
+  overflow-x: hidden;
+  overflow-y: hidden;
+  animation: slideUp 0.35s ease-out;
+  padding-bottom: env(safe-area-inset-bottom, 16px);
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
+
+@keyframes slideDown {
+  from { transform: translateY(0); }
+  to   { transform: translateY(100%); }
+}
+
+/* ✅ override של slideUp עם slideDown */
+.slide-down {
+  animation: slideDown 0.3s ease-in forwards !important;
+}

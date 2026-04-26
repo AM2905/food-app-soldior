@@ -193,7 +193,8 @@ export default function OpeningPart({ onNext }) {
           className="next-button"
           style={{
             left: "50%", width: "100%", height: "24%",
-            bottom: "-7%", paddingBottom: "9%", fontSize: "140%"
+            bottom: "-7%", paddingBottom: "9%", fontSize: "140%",    maxWidth: "390px",whiteSpace: "nowrap",
+
           }}
         >
           בואו תראו מה קרה לה...
