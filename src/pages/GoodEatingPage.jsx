@@ -158,6 +158,8 @@ export default function GoodEatingPage({ onNext }) {
   return (
     <div className="goodEating-container">
       <span className="up-title">דגשים לאכילה נכונה</span>
+            <span className="bad-subtitle">לחצו בשביל לגלות</span>
+
       <img src={upPart} className="upPart" />
 
       {foods.map((item, index) => {

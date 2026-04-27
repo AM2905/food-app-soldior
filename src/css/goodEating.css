@@ -168,8 +168,9 @@ body { font-family: 'Rubik', sans-serif; overflow: hidden; }
     line-height: 1.6;
     direction: rtl;
     font-weight: bolder;
-    position: relative;
-    top: -3vh;
+    position: inherit;
+    font-size: 126%;
+    top: 2vh;
 }
 
 /* תמונה נוספת */
