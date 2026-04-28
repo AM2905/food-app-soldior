@@ -32,8 +32,8 @@ body { font-family: 'Rubik', sans-serif; overflow: hidden; }
 }
 
 /* ── upPart ── */
-.upPart {
-  filter: drop-shadow(0px 4px 10px rgba(0,0,0,0.2));
+.upPartPls {
+  /* filter: drop-shadow(0px 4px 10px rgba(0,0,0,0.2)); */
   position: absolute;
   width: 122%;
   top: -2%;
@@ -66,7 +66,6 @@ body { font-family: 'Rubik', sans-serif; overflow: hidden; }
 .sign-img {
     width: 96%;
     max-width: 120px;
-    filter: drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.15));
 }
 
 .sign-check {
@@ -95,14 +94,14 @@ body { font-family: 'Rubik', sans-serif; overflow: hidden; }
 
 /* ── נמלה עם שלט ── */
 .ant-wrapper {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  z-index: 5;
+    position: absolute;
+    bottom: 5%;
+    left: 0;
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    z-index: 5;
 }
 
 /* ✅ כניסה מהשמאל */
@@ -235,4 +234,96 @@ body { font-family: 'Rubik', sans-serif; overflow: hidden; }
     z-index: 100;
     direction: rtl;
     opacity: 0.55;
+}
+.ant-wrapper {
+  bottom: env(safe-area-inset-bottom, 60px);
+}
+.badSigns-container {
+  padding-bottom: env(safe-area-inset-bottom, 80px);
+}
+
+/* ── מסך סיום ── */
+.end-screen {
+
+height: 100%;
+width: 100%;
+  position: absolute;
+  inset: 0;
+   background-image: url("../assets/before-game-background.svg");
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  text-align: center;
+  padding: 20px;
+  z-index: 200;
+
+  animation: fadeIn 0.4s ease;
+}
+
+.end-img {
+  width: 120px;
+  margin-bottom: 20px;
+}
+
+.end-title {
+  color: #365582;
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.end-text {
+  color: #365582;
+  font-size: 16px;
+  max-width: 280px;
+  line-height: 1.5;
+  margin-bottom: 30px;
+  direction: rtl;
+}
+.logo {
+  position: absolute;
+  top: 3%;
+  left: 3%;
+}
+.end-btn {
+   position: fixed;
+    bottom: calc(4% + env(safe-area-inset-bottom, 0px));
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+    padding: 14px 40px;
+    font-size: 20px;
+    font-weight: bold;
+    background: #E3F4FF;
+    color: #4890C6;
+    border: none;
+    border-radius: 50px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    direction: rtl;
+    touch-action: manipulation;
+    font-family: 'Rubik', sans-serif;
+    cursor: pointer;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.bubble-text{
+      position: absolute;
+  top: 12%;
+  width: 82%;
+  text-align: center;
+  font-weight: bold;
+  color: #5791EF;
+  font-size: 140%;
+  z-index: 2;
+  direction: rtl;
+
 }

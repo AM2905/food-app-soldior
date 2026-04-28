@@ -9,21 +9,25 @@ import shoe from "../assets/scary-shoe.svg";
 import antSign from "../assets/ant-sign.svg";
 import antFace from "../assets/ant-face.svg";
 import check from "../assets/warning-mark.svg";
+import talkingBubble from "../assets/talking-bubble.svg";
 
 const signs = [
   { id: 1, img: spider,   label: "הפסקת מחזור (או שינויים משמעותיים במחזור)" },
-  { id: 2, img: sandwich, label: "תחושת חולשה או עייפות קיצונית"              },
-  { id: 3, img: cloud,    label: "שינוי משמעותי במשקל (עלייה או ירידה)"       },
+  { id: 2, img: sandwich, label: "תחושת חולשה או עייפות קיצונית" },
+  { id: 3, img: cloud,    label: "שינוי משמעותי במשקל (עלייה או ירידה)" },
   { id: 4, img: shoe,     label: "כאבי שרירים ועצמות מתמשכים / חריגים", big: true },
 ];
 
 export default function BadSigns({ onNext }) {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [doneIds, setDoneIds]         = useState([]);
-  const [antText, setAntText]         = useState(null);
-  const [antState, setAntState]       = useState("hidden");
-  const [showNext, setShowNext]       = useState(false);
-  const [showIntro, setShowIntro]     = useState(true);  // ✅ פופאפ פתיחה
+  const [doneIds, setDoneIds] = useState([]);
+  const [antText, setAntText] = useState(null);
+  const [antState, setAntState] = useState("hidden");
+  const [showNext, setShowNext] = useState(false);
+
+  const [showEndScreen, setShowEndScreen] = useState(false); // ✅ חדש
+
+  const [showIntro, setShowIntro] = useState(true);
   const [introClosing, setIntroClosing] = useState(false);
 
   const startY = useRef(null);
@@ -43,6 +47,7 @@ export default function BadSigns({ onNext }) {
     startY.current = null;
     if (delta > 60) closeIntro();
   };
+
   const onMouseDown = (e) => {
     startY.current = e.clientY;
     const onMouseUp = (ev) => {
@@ -62,6 +67,7 @@ export default function BadSigns({ onNext }) {
       const newDone = [...doneIds, sign.id];
       setDoneIds(newDone);
       setActiveIndex((prev) => prev + 1);
+
       if (newDone.length === signs.length) {
         setTimeout(() => setShowNext(true), 2000);
       }
@@ -74,74 +80,101 @@ export default function BadSigns({ onNext }) {
         setAntState("entering");
         setTimeout(() => setAntState("visible"), 500);
       }, 500);
-    } else if (antState === "hidden" || antState === "exiting") {
+    } else {
       setTimeout(() => {
         setAntText(newText);
         setAntState("entering");
         setTimeout(() => setAntState("visible"), 500);
-      }, antState === "exiting" ? 500 : 0);
+      }, 0);
     }
   };
 
   return (
     <div className="badSigns-container">
-      <span className="bad-title">סימנים שחשוב לשים לב אליהם</span>
-      <span className="bad-subtitle">לחצו בשביל לגלות</span>
-      <img src={upPart} className="upPart" />
 
-      <div className="signs-grid">
-        {signs.map((sign, index) => {
-          const isDone   = doneIds.includes(sign.id);
-          const isActive = index === activeIndex;
-          return (
-            <div
-              key={sign.id}
-              className={`sign-item ${isActive ? "shake" : ""} ${isDone ? "done" : ""}`}
-              onClick={() => handleSignClick(index, sign)}
-            >
-              <img src={sign.img} className={`sign-img ${sign.big ? "sign-img-big" : ""}`} alt="" />
-              {isDone && <img src={check} className="sign-check" alt="" />}
-            </div>
-          );
-        })}
-      </div>
-
-      {antState !== "hidden" && (
-        <div className={`ant-wrapper ant-${antState}`}>
-          <div className="ant-sign-box">
-            <p className="ant-sign-text" dir="rtl">{antText}</p>
-          </div>
-          <img src={antSign} className="ant-img" alt="" />
+      {/* ✅ מסך סיום */}
+      {showEndScreen && (
+        <div className="end-screen">
+            
+          <img style={{ width: "93%", top: "4%" }} src={talkingBubble} className="logo" />
+        <p className="bubble-text">עכשיו אני צריכה לוודא שהבנתי בשביל להצליח להגיע לקן</p>
+         
+          <button className="end-btn" onClick={onNext}>
+            בואו נתחיל!
+          </button>
         </div>
       )}
 
-      {showNext && (
-        <button className="bad-next-btn" onClick={onNext}>המשך</button>
-      )}
+      {!showEndScreen && (
+        <>
+          <span className="bad-title">סימנים שחשוב לשים לב אליהם</span>
+          <span className="bad-subtitle">לחצו בשביל לגלות</span>
+          <img src={upPart} className="upPart" />
 
-      {/* ✅ פופאפ פתיחה */}
-      {showIntro && (
-        <div className="overlay">
-          <div className={`bottom-sheet ${introClosing ? "slide-down" : ""}`}>
-            <div
-              className="drag-handle-wrapper"
-              onTouchStart={onTouchStart}
-              onTouchEnd={onTouchEnd}
-              onMouseDown={onMouseDown}
-            >
-              <div className="drag-handle" />
-              <span className="drag-hint">גררו למטה לסגירה</span>
-            </div>
-            <div className="sheet-content" dir="rtl">
-              <img src={antFace} className="sheet-food-img" alt="" />
-              <div className="sheet-red-bar-two"> אם את חווה אחד או יותר מהדברים הבאים אל תתעלמי, פני לבדיקה רפואית</div>
-             
-              <p className="sheet-text">
-                אלו יכולים להיות סימנים לכך שהגוף לא מקבל את מה שהוא צריך
-              </p>
-            </div>
+          <div className="signs-grid">
+            {signs.map((sign, index) => {
+              const isDone = doneIds.includes(sign.id);
+              const isActive = index === activeIndex;
+
+              return (
+                <div
+                  key={sign.id}
+                  className={`sign-item ${isActive ? "shake" : ""} ${isDone ? "done" : ""}`}
+                  onClick={() => handleSignClick(index, sign)}
+                >
+                  <img src={sign.img} className={`sign-img ${sign.big ? "sign-img-big" : ""}`} alt="" />
+                  {isDone && <img src={check} className="sign-check" alt="" />}
+                </div>
+              );
+            })}
           </div>
-        </div>
+
+          {antState !== "hidden" && (
+            <div className={`ant-wrapper ant-${antState}`}>
+              <div className="ant-sign-box">
+                <p className="ant-sign-text" dir="rtl">{antText}</p>
+              </div>
+              <img src={antSign} className="ant-img" alt="" />
+            </div>
+          )}
+
+          {showNext && (
+            <button
+              className="bad-next-btn"
+              onClick={() => setShowEndScreen(true)} // ✅ במקום onNext
+            >
+              המשך
+            </button>
+          )}
+
+          {showIntro && (
+            <div className="overlay">
+              <div className={`bottom-sheet ${introClosing ? "slide-down" : ""}`}>
+                <div
+                  className="drag-handle-wrapper"
+                  onTouchStart={onTouchStart}
+                  onTouchEnd={onTouchEnd}
+                  onMouseDown={onMouseDown}
+                >
+                  <div className="drag-handle" />
+                  <span className="drag-hint">גררו למטה לסגירה</span>
+                </div>
+
+                <div className="sheet-content" dir="rtl">
+                  <img src={antFace} className="sheet-food-img" alt="" />
+
+                  <div className="sheet-red-bar-two">
+                    אם את חווה אחד או יותר מהדברים הבאים אל תתעלמי, פני לבדיקה רפואית
+                  </div>
+
+                  <p className="sheet-text">
+                    אלו יכולים להיות סימנים לכך שהגוף לא מקבל את מה שהוא צריך
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+        </>
       )}
     </div>
   );

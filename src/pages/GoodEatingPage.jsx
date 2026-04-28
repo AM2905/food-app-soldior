@@ -156,11 +156,13 @@ export default function GoodEatingPage({ onNext }) {
   };
 
   return (
+    
     <div className="goodEating-container">
+          <div className="helpUpPartWork"></div>
+
       <span className="up-title">דגשים לאכילה נכונה</span>
             <span className="bad-subtitle">לחצו בשביל לגלות</span>
-
-      <img src={upPart} className="upPart" />
+      <img src={upPart} className="upPartWork" />
 
       {foods.map((item, index) => {
         const isDone = index < activeIndex;
@@ -183,7 +185,7 @@ export default function GoodEatingPage({ onNext }) {
           style={{
             position: "fixed",
             bottom: "5%",
-            left: "43%",
+            left: "27%",
             transform: "translateX(-50%)",
             zIndex: 9999,
             padding: "16px 40px",
