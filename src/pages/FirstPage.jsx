@@ -27,7 +27,7 @@ export default function FirstPage({ onNext, onReset }) {
   return (
     <div className={`firstPage-container ${isReturning ? "final-screen" : ""}`}>
 
-      <img src={logo} className="logo" alt="" />
+      <img src={logo} className="logo" style={{zIndex:"20"}} alt="" />
 
       {!isReturning ? (
         <>
