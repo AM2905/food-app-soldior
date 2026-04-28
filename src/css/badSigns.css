@@ -237,6 +237,7 @@ body { font-family: 'Rubik', sans-serif; overflow: hidden; }
 }
 .ant-wrapper {
   bottom: env(safe-area-inset-bottom, 60px);
+      bottom: 8%;
 }
 .badSigns-container {
   padding-bottom: env(safe-area-inset-bottom, 80px);

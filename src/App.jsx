@@ -6,7 +6,7 @@ import GoodEatingPage from "./pages/GoodEatingPage.jsx";
 import BadSigns from "./pages/BadSigns.jsx";
 import gamePage from "./pages/GamePage.jsx";
 
-const pages = [FirstPage,OpeningPart,GoodEatingPage,BadSigns,gamePage]; // ✅ נוסף לרשימה
+const pages = [FirstPage,OpeningPart,GoodEatingPage,BadSigns,gamePage,FirstPage]; // ✅ נוסף לרשימה
 
 function App() {
   const [pageIndex, setPageIndex] = useState(0); // ✅ הוסר הפרמטר השלישי בטעות

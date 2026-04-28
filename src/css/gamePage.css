@@ -178,7 +178,7 @@ body { font-family: 'Rubik', sans-serif; overflow: hidden; }
 .gp-options {
     display: flex;
     grid-template-columns: 1fr 1fr;
-    gap: 7%;
+    gap: 2vh;
     width: 97%;
     flex-direction: column;
 }

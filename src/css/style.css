@@ -54,6 +54,7 @@ body {
   position: absolute;
   top: 3%;
   left: 3%;
+  z-index: 20;
 }
 
 /* ── VIDEO + BACKGROUND IMAGE ── */
@@ -128,4 +129,28 @@ body {
   cursor: pointer;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   touch-action: manipulation;
+}
+
+.bad-subtitle {
+    color: #4890C6;
+    font-size: clamp(14px, 4vw, 18px);
+    text-align: center;
+    position: absolute;
+    top: 8%;
+    width: 96%;
+    z-index: 100;
+    direction: rtl;
+    opacity: 0.55;
+}
+/* ── מסך סיום ── */
+.final-screen {
+  background-image: url("../assets/background-final.svg") !important;
+}
+
+/* כותרת סיום */
+.final-title {
+    color: #ffffff;
+    font-size: 220%;
+    padding: 6%;
+    background: #366c34;
 }
