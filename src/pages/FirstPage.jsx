@@ -4,32 +4,31 @@ import logo from "../assets/logo.svg";
 
 export default function FirstPage({ onNext, onReset }) {
 
-  const [isReturning, setIsReturning] = useState(false);
+  const [isFinished, setIsFinished] = useState(false);
 
   useEffect(() => {
-    const visited = localStorage.getItem("visited");
-    if (visited === "true") {
-      setIsReturning(true);
+    const finished = localStorage.getItem("finished");
+    if (finished === "true") {
+      setIsFinished(true);
     }
   }, []);
 
   const handleStart = () => {
-    localStorage.setItem("visited", "true");
     onNext();
   };
 
   const handleReset = () => {
-    localStorage.removeItem("visited"); // איפוס
-    if (onReset) onReset(); // אופציונלי אם יש לך ניהול מסכים
-    else window.location.reload(); // fallback
+    localStorage.removeItem("finished"); // איפוס סיום
+    if (onReset) onReset();
+    else window.location.reload();
   };
 
   return (
-    <div className={`firstPage-container ${isReturning ? "final-screen" : ""}`}>
+    <div className={`firstPage-container ${isFinished ? "final-screen" : ""}`}>
 
       <img src={logo} className="logo" style={{zIndex:"20"}} alt="" />
 
-      {!isReturning ? (
+      {!isFinished ? (
         <>
           <span className="first-title">לומדת תזונת לוחמות</span>
 
@@ -43,7 +42,11 @@ export default function FirstPage({ onNext, onReset }) {
             סיימתם את הלומדה!
           </span>
 
-          <button className="start-button" style={{bottom: "7%"}} onClick={handleReset}>
+          <button
+            className="start-button"
+            style={{bottom: "7%"}}
+            onClick={handleReset}
+          >
             לחזור על החומר
           </button>
         </>
