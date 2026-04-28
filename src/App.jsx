@@ -5,8 +5,9 @@ import OpeningPart from "./pages/OpeningPart.jsx";
 import GoodEatingPage from "./pages/GoodEatingPage.jsx";
 import BadSigns from "./pages/BadSigns.jsx";
 import gamePage from "./pages/GamePage.jsx";
+import end from "./pages/end.jsx";
 
-const pages = [FirstPage,OpeningPart,GoodEatingPage,BadSigns,gamePage,FirstPage]; // ✅ נוסף לרשימה
+const pages = [FirstPage,OpeningPart,GoodEatingPage,BadSigns,gamePage,end,FirstPage]; // ✅ נוסף לרשימה
 
 function App() {
   const [pageIndex, setPageIndex] = useState(0); // ✅ הוסר הפרמטר השלישי בטעות
@@ -14,10 +15,11 @@ function App() {
   const CurrentPage = pages[pageIndex];
   const goNext = () => setPageIndex(pageIndex + 1);
   const onHome = () => setPageIndex(pageIndex - 1);
+  const onFirstPage = () => setPageIndex(2);
 
   return (
     <div className="app">
-      <CurrentPage onNext={goNext} onHome={onHome}/>
+      <CurrentPage onNext={goNext} onHome={onHome} onFirstPage={onFirstPage}/>
     </div>
   );
 }

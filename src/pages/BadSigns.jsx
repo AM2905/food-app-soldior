@@ -109,7 +109,7 @@ export default function BadSigns({ onNext }) {
         <>
           <span className="bad-title">סימנים שחשוב לשים לב אליהם</span>
           <span className="bad-subtitle">לחצו בשביל לגלות</span>
-          <img src={upPart} className="upPart" />
+          <img src={upPart} className="upPartPls" />
 
           <div className="signs-grid">
             {signs.map((sign, index) => {
@@ -163,7 +163,7 @@ export default function BadSigns({ onNext }) {
                 <div className="sheet-content" dir="rtl">
                   <img src={antFace} className="sheet-food-img" alt="" />
 
-                  <div className="sheet-red-bar-two">
+                  <div className="sheet-red-bar-two" style={{whiteSpace: "normal"}}>
                     אם את חווה אחד או יותר מהדברים הבאים אל תתעלמי, פני לבדיקה רפואית
                   </div>
 

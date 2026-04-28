@@ -154,3 +154,18 @@ body {
     padding: 6%;
     background: #366c34;
 }
+
+
+.endPage-container{
+  
+  height: 100%;
+  width: 100%;
+  background-image: url("../assets/background-final.svg");
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+
+}
