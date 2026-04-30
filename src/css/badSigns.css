@@ -231,7 +231,7 @@ body { font-family: 'Rubik', sans-serif; overflow: hidden; }
     position: absolute;
     top: 8%;
     width: 96%;
-    z-index: 100;
+    z-index: 2;
     direction: rtl;
     opacity: 0.55;
 }

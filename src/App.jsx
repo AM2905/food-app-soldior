@@ -7,15 +7,15 @@ import BadSigns from "./pages/BadSigns.jsx";
 import gamePage from "./pages/GamePage.jsx";
 import end from "./pages/end.jsx";
 
-const pages = [FirstPage,OpeningPart,GoodEatingPage,BadSigns,gamePage,end,FirstPage]; // ✅ נוסף לרשימה
+const pages = [FirstPage,gamePage,GoodEatingPage,BadSigns,gamePage,end,FirstPage]; // ✅ נוסף לרשימה
 
 function App() {
   const [pageIndex, setPageIndex] = useState(0); // ✅ הוסר הפרמטר השלישי בטעות
 
   const CurrentPage = pages[pageIndex];
   const goNext = () => setPageIndex(pageIndex + 1);
-  const onHome = () => setPageIndex(pageIndex - 1);
-  const onFirstPage = () => setPageIndex(2);
+  const onHome = () => setPageIndex(pageIndex - 2);
+  const onFirstPage = () => setPageIndex(1);
 
   return (
     <div className="app">

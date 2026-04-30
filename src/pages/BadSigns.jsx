@@ -3,7 +3,7 @@ import "../css/badSigns.css";
 
 import upPart from "../assets/up-part.svg";
 import spider from "../assets/scary-spider.svg";
-import sandwich from "../assets/scary-sandwitch.svg";
+import sandwich from "../assets/scary-k2.svg";
 import cloud from "../assets/scary-cloud.svg";
 import shoe from "../assets/scary-shoe.svg";
 import antSign from "../assets/ant-sign.svg";

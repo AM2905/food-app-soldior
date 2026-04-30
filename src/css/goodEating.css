@@ -183,17 +183,18 @@ body { font-family: 'Rubik', sans-serif; overflow: hidden; }
     font-size: 126%;
     position: absolute;
     max-width: 360px;
-    top: 65%;
+    top: 60%;
 }
 
 /* תמונה נוספת */
 .sheet-extra-img {
-    width: 87%;
-    max-width: 320px;
-    border-radius: 12px;
-    position: relative;
-    left: -8vh;
-    bottom: 6vh;
+    width:40vh;
+    /* max-width: 320px; */
+    /* border-radius: 12px; */
+    /* position: relative; */
+    left: 0;
+    bottom: 0;
+    position: absolute;
 }
 /* placeholder תמונה */
 .placeholder-img {

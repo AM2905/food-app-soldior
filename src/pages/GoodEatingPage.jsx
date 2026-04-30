@@ -112,8 +112,8 @@ export default function GoodEatingPage({ onNext }) {
               <>
                 <p className="sheet-text">נסי לשלב מקור חלבון בכל ארוחה</p>
                 {PLACEHOLDER_PROTEIN
-                  ? <img src={PLACEHOLDER_PROTEIN} style={{    left: "1vh",
-    bottom: "3vh"}}className="sheet-extra-img" alt="" />
+                  ? <img src={PLACEHOLDER_PROTEIN} style={{    left: "50%",
+    bottom: "17vh", transform:"translate(-50%)"}}className="sheet-extra-img" alt="" />
                   : <div className="placeholder-img">[ תמונת חלבון ]</div>}
                 <button className="sheet-btn sheet-btn-left" onClick={() => setFlipped(false)}>→ חזור</button>
               </>
@@ -133,9 +133,9 @@ export default function GoodEatingPage({ onNext }) {
             ) : (
               <>
                 {PLACEHOLDER_CARBS
-                  ? <img src={PLACEHOLDER_CARBS} className="sheet-extra-img" style={{    left: "-3vh",
-    width: "61%",
-    bottom: "2vh"}} alt="" />
+                  ? <img src={PLACEHOLDER_CARBS} className="sheet-extra-img" style={{    left: "50%",
+     transform:"translate(-50%)",
+    bottom: "14vh"}} alt="" />
                   : <div className="placeholder-img">[ תמונת פחמימות ]</div>}
                 <button className="sheet-btn sheet-btn-left" onClick={() => setFlipped(false)}>→ חזור</button>
               </>

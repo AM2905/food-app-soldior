@@ -13,7 +13,7 @@ import meat   from "../assets/food-meat.svg";
 import orange from "../assets/food-orange.svg";
 
 import spider   from "../assets/scary-spider.svg";
-import sandwich from "../assets/scary-sandwitch.svg";
+import sandwich from "../assets/scary-k2.svg";
 import shoe     from "../assets/scary-shoe.svg";
 
 const GOOD_IMGS = [meal, meat, orange];
@@ -314,7 +314,7 @@ export default function GamePage({ onNext, onHome }) {
       {/* pause button — hidden during tutorial */}
       {!showTutorial && (
         <button className="gp-pause-btn" onClick={togglePause}>
-          {paused ? "▶ המשך" : "⏸ עצור"}
+          {paused ? "> המשך" : "|| עצור"}
         </button>
       )}
 
