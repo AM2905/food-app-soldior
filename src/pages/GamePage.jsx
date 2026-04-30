@@ -20,18 +20,38 @@ const GOOD_IMGS = [meal, meat, orange];
 const BAD_IMGS  = [spider, sandwich, shoe];
 
 const QUESTIONS = [
-  { q: "כמה ארוחות עיקריות מומלץ לאכול ביום?",   options: ["2","3","5","1"],          correct: 1 },
-  { q: "מה מקור האנרגיה העיקרי לגוף?",            options: ["חלבון","שומן","פחמימות","ויטמינים"], correct: 2 },
-  { q: "מה עוזר לבניית שרירים והתאוששות?",        options: ["סוכר","חלבון","מלח","קפאין"],       correct: 1 },
-  { q: "כמה מנות פירות/ירקות ביום מומלצות?",      options: ["פעם אחת","פעמיים","5 מנות","רק בצהריים"], correct: 2 },
-  { q: "מה לא מחליף ארוחה מלאה?",                options: ["סלט","חטיף","כריך","מרק"],          correct: 1 },
+  {
+    q: "למה לא לדלג על ארוחות?",
+    options: ["כדי לרדת במשקל", "כדי לספק אנרגיה קבועה לגוף", "כדי לחסוך זמן", "כדי לשפר מצב רוח"],
+    correct: 1,
+  },
+  {
+    q: "למה חטיף לא מחליף ארוחה?",
+    options: ["הוא לא טעים", "יש בו יותר קלוריות", "הוא לא מספק את מה שהגוף צריך", "הוא גורם להשמנה"],
+    correct: 2,
+  },
+  {
+    q: "מה תפקיד החלבון?",
+    options: ["אנרגיה בלבד", "בניית שריר והתאוששות", "ריכוז בלבד", "שובע בלבד"],
+    correct: 1,
+  },
+  {
+    q: "מה קורה כשחסרות פחמימות?",
+    options: ["יותר כוח", "יותר אנרגיה", "עייפות וסיכון לפציעות", "אין השפעה"],
+    correct: 2,
+  },
+  {
+    q: "איזה סימן דורש בדיקה?",
+    options: ["רעב אחרי אימון", "עייפות קלה", "שינוי משמעותי במשקל", "רצון למתוק"],
+    correct: 2,
+  },
 ];
 
-const TOTAL_Q   = 4; // game ends after exactly 4 questions
-const GAME_W    = 390;
-const ANT_W     = 80;
-const ITEM_SIZE = 65;
-const GROUND_H  = 90;
+const TOTAL_Q    = 5; // game ends after exactly 5 correct answers
+const GAME_W     = 390;
+const ANT_W      = 80;
+const ITEM_SIZE  = 65;
+const GROUND_H   = 90;
 const SCORE_STEP = 1 / TOTAL_Q;
 
 let idCounter = 0;
@@ -48,37 +68,35 @@ function newItem() {
 }
 
 export default function GamePage({ onNext, onHome }) {
-  const [antX, setAntX]               = useState(GAME_W / 2 - ANT_W / 2);
-  const [items, setItems]              = useState([newItem()]);
-  const [question, setQuestion]        = useState(null);
-  const [qIndex, setQIndex]            = useState(0);
-  const [wrong, setWrong]              = useState(null);
-  const [score, setScore]              = useState(0);
-  const [paused, setPaused]            = useState(false);
-  const [gameOver, setGameOver]        = useState(false);
-  const [showIntro, setShowIntro]      = useState(true);
-  const [introClosing, setIntroClosing] = useState(false);
-  const [qVisible, setQVisible]        = useState(false);
+  const [antX, setAntX]                 = useState(GAME_W / 2 - ANT_W / 2);
+  const [items, setItems]                = useState([newItem()]);
+  const [question, setQuestion]          = useState(null);
+  const [qIndex, setQIndex]              = useState(0);
+  const [wrong, setWrong]                = useState(null);
+  const [score, setScore]                = useState(0);
+  const [paused, setPaused]              = useState(false);
+  const [gameOver, setGameOver]          = useState(false);
+  const [showIntro, setShowIntro]        = useState(true);
+  const [introClosing, setIntroClosing]  = useState(false);
+  const [qVisible, setQVisible]          = useState(false);
+  const [showTutorial, setShowTutorial]  = useState(false);
+  const [tutAntX, setTutAntX]            = useState(GAME_W / 2 - ANT_W / 2);
 
-  // tutorial states
-  const [showTutorial, setShowTutorial] = useState(false);
-  const [tutAntX, setTutAntX]           = useState(GAME_W / 2 - ANT_W / 2);
-
-  const antXRef    = useRef(antX);
-  const pausedRef  = useRef(true);
-  const dragging   = useRef(false);
-  const dragStartX = useRef(0);
-  const antStartX  = useRef(0);
-  const frameRef   = useRef(null);
-  const qIndexRef  = useRef(qIndex);
-  const scoreRef   = useRef(score);
-  const tutFrameRef = useRef(null);
-  const tutDone    = useRef(false);
+  const antXRef         = useRef(antX);
+  const pausedRef       = useRef(true);
+  const dragging        = useRef(false);
+  const dragStartX      = useRef(0);
+  const antStartX       = useRef(0);
+  const frameRef        = useRef(null);
+  const qIndexRef       = useRef(qIndex);
+  const scoreRef        = useRef(score);
+  const tutFrameRef     = useRef(null);
+  const tutDone         = useRef(false);
   const showTutorialRef = useRef(false);
 
-  useEffect(() => { antXRef.current   = antX;   }, [antX]);
-  useEffect(() => { qIndexRef.current = qIndex; }, [qIndex]);
-  useEffect(() => { scoreRef.current  = score;  }, [score]);
+  useEffect(() => { antXRef.current        = antX;        }, [antX]);
+  useEffect(() => { qIndexRef.current      = qIndex;      }, [qIndex]);
+  useEffect(() => { scoreRef.current       = score;       }, [score]);
   useEffect(() => { showTutorialRef.current = showTutorial; }, [showTutorial]);
 
   // ── tutorial animation ──
@@ -100,7 +118,6 @@ export default function GamePage({ onNext, onHome }) {
       tutDone.current = true;
       cancelAnimationFrame(tutFrameRef.current);
       setShowTutorial(false);
-      // snap real ant to where tutorial ant was
       pausedRef.current = false;
     }
   }, []);
@@ -239,16 +256,14 @@ export default function GamePage({ onNext, onHome }) {
   const handleAnswer = (optIdx) => {
     if (!question) return;
 
-    const isCorrect = optIdx === question.correct;
-
-    if (isCorrect) {
-      const newScore = Math.min(TOTAL_Q, scoreRef.current + 1);
-      scoreRef.current = newScore;
-      setScore(newScore);
-    } else {
+    if (optIdx !== question.correct) {
       setWrong(optIdx);
-      return; // keep question open on wrong answer
+      return; // stay on question until correct
     }
+
+    const newScore   = Math.min(TOTAL_Q, scoreRef.current + 1);
+    scoreRef.current = newScore;
+    setScore(newScore);
 
     const nextQIndex = qIndexRef.current + 1;
 
@@ -259,7 +274,6 @@ export default function GamePage({ onNext, onHome }) {
       pausedRef.current = false;
       setItems((prev) => [...prev, newItem()]);
 
-      // end game after TOTAL_Q questions answered correctly
       if (nextQIndex >= TOTAL_Q) {
         setTimeout(() => setGameOver(true), 400);
       }
@@ -279,7 +293,7 @@ export default function GamePage({ onNext, onHome }) {
     return (
       <div className="gp-gameover">
         <img src={antFace} className="gp-gameover-img" alt="" />
-        <p className="gp-gameover-text" dir="rtl">כל הכבוד! סיימת את המשחק!</p>
+        <p className="gp-gameover-text" dir="rtl">כל הכבוד! השגת מספיק אנרגיה להגיע לקן!</p>
         <button className="gp-gameover-btn" onClick={onNext}>המשך ←</button>
       </div>
     );
@@ -370,14 +384,12 @@ export default function GamePage({ onNext, onHome }) {
       {/* tutorial overlay */}
       {showTutorial && (
         <div className="gp-tutorial-overlay">
-          {/* animated ant */}
           <img
             src={antImg}
             className="gp-ant gp-tut-ant"
             alt=""
             style={{ left: tutAntX }}
           />
-          {/* finger hint follows the ant */}
           <div
             className="gp-tutorial-hint"
             style={{ left: tutAntX + ANT_W / 2 }}

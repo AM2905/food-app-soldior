@@ -83,7 +83,7 @@ export default function GoodEatingPage({ onNext }) {
           <div className="sheet-content" dir="rtl">
             <img src={meal} className="sheet-food-img" alt="" />
             <div className="sheet-red-bar">לא מדלגות על ארוחות</div>
-            <p className="sheet-text">הגוף שלך עובד קשה — הוא צריך אספקה קבועה של אנרגיה</p>
+            <p className="sheet-text">הגוף שלך עובד קשה — הוא צריך אספקה  של אנרגיה</p>
             {PLACEHOLDER_CIRCLES
               ? <img src={PLACEHOLDER_CIRCLES} className="sheet-extra-img" alt="" />
               : <div className="placeholder-img">[ תמונת עיגולים ]</div>}
@@ -95,7 +95,7 @@ export default function GoodEatingPage({ onNext }) {
             <img src={snack} className="sheet-food-img" alt="" />
             <div className="sheet-red-bar">לא מחליפות ארוחה בחטיפים</div>
             <p className="sheet-text">חטיף הוא לא תחליף לארוחה.
-               הגוף שלך צריך ארוחה אמיתית כדי לקבל אנרגיה ולתפקד לאורך זמן.</p>
+               הגוף שלך צריך ארוחה מלאה ומגוונת כדי לקבל את כל רכיבי התזונה ולתפקד לאורך זמן.</p>
           </div>
         );
       case "protein":
@@ -105,7 +105,7 @@ export default function GoodEatingPage({ onNext }) {
             <div className="sheet-red-bar">משלבות חלבון בכל ארוחה</div>
             {!flipped ? (
               <>
-                <p className="sheet-text">חלבון עוזר לבניית השריר, להתאוששות ולמניעת פציעות</p>
+                <p className="sheet-text">חלבון חיוני לבניית השריר ולהתאוששות</p>
                 <button className="sheet-btn" onClick={() => setFlipped(true)}>המשך ←</button>
               </>
             ) : (
