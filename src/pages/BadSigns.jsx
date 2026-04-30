@@ -167,7 +167,7 @@ export default function BadSigns({ onNext }) {
                     אם את חווה אחד או יותר מהדברים הבאים אל תתעלמי, פני לבדיקה רפואית
                   </div>
 
-                  <p className="sheet-text">
+                  <p className="sheet-text" style={{position:"static"}}>
                     אלו יכולים להיות סימנים לכך שהגוף לא מקבל את מה שהוא צריך
                   </p>
                 </div>

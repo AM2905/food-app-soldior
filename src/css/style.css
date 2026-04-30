@@ -54,8 +54,22 @@ body {
   position: absolute;
   top: 3%;
   left: 3%;
-  
 }
+
+@keyframes cloudMove {
+  0% {
+    transform: translateX(0);
+  }
+  50% {
+
+    transform: translateX(10px); /* moves a little right */
+  }
+  100% {
+
+    transform: translateX(0); /* back to start */
+  }
+}
+
 
 /* ── VIDEO + BACKGROUND IMAGE ── */
 .background-video,
@@ -156,16 +170,3 @@ body {
 }
 
 
-.endPage-container{
-  
-  height: 100%;
-  width: 100%;
-  background-image: url("../assets/background-final.svg");
-  background-size: cover;
-  background-position: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-
-}

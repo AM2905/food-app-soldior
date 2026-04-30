@@ -3,7 +3,7 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { font-family: 'Rubik', sans-serif; overflow: hidden; }
 
-/* ── מיכל ראשי ── */
+/* ── main container ── */
 .gp-container {
   position: relative;
   width: 100%;
@@ -13,7 +13,7 @@ body { font-family: 'Rubik', sans-serif; overflow: hidden; }
   touch-action: none;
 }
 
-/* ── רקע ── */
+/* ── background ── */
 .gp-bg {
   position: absolute;
   inset: 0;
@@ -23,9 +23,7 @@ body { font-family: 'Rubik', sans-serif; overflow: hidden; }
   z-index: 0;
 }
 
-/* ── upPart ── */
-
-/* ── בר עליון ── */
+/* ── top bar ── */
 .gp-topbar {
   position: absolute;
   top: 3%;
@@ -56,15 +54,15 @@ body { font-family: 'Rubik', sans-serif; overflow: hidden; }
   width: 111%;
 }
 
-/* בר התקדמות */
+/* progress bar */
 .gp-progress-track {
-    flex: 1;
-    height: 63%;
-    background: rgb(107 69 18);
-    border-radius: 20px;
-    overflow: hidden;
-    border: 5px solid rgb(107 69 18);
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  flex: 1;
+  height: 63%;
+  background: rgb(107 69 18);
+  border-radius: 20px;
+  overflow: hidden;
+  border: 5px solid rgb(107 69 18);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
 }
 
 .gp-progress-fill {
@@ -84,7 +82,7 @@ body { font-family: 'Rubik', sans-serif; overflow: hidden; }
   box-shadow: 0 2px 6px rgba(0,0,0,0.2);
 }
 
-/* ── פריטים נופלים ── */
+/* ── falling items ── */
 .gp-item {
   position: absolute;
   width: 65px;
@@ -94,7 +92,7 @@ body { font-family: 'Rubik', sans-serif; overflow: hidden; }
   pointer-events: none;
 }
 
-/* ── נמלה ── */
+/* ── ant ── */
 .gp-ant {
   position: absolute;
   bottom: 88px;
@@ -105,7 +103,7 @@ body { font-family: 'Rubik', sans-serif; overflow: hidden; }
   filter: drop-shadow(0 4px 10px rgba(0,0,0,0.2));
 }
 
-/* ── רצפה ── */
+/* ── ground ── */
 .gp-ground {
   position: absolute;
   bottom: 0;
@@ -115,16 +113,15 @@ body { font-family: 'Rubik', sans-serif; overflow: hidden; }
   pointer-events: none;
 }
 
-/* ── overlay שאלה ── */
+/* ── question overlay ── */
 .gp-question-overlay {
-    position: fixed;
-    /* inset: 0; */
-    display: flex;
-    align-items: center;
-    top: 13%;
-    justify-content: center;
-    z-index: 5;
-    animation: goDown 0.8s ease;
+  position: fixed;
+  display: flex;
+  align-items: center;
+  top: 13%;
+  justify-content: center;
+  z-index: 5;
+  animation: goDown 0.8s ease;
 }
 
 @keyframes goDown {
@@ -132,7 +129,7 @@ body { font-family: 'Rubik', sans-serif; overflow: hidden; }
   to   { top: 13%; }
 }
 
-/* ── לוח שאלה ── */
+/* ── question board ── */
 .gp-question-board {
   position: relative;
   width: 88%;
@@ -148,60 +145,56 @@ body { font-family: 'Rubik', sans-serif; overflow: hidden; }
 }
 
 .gp-qboard-content {
-    position: absolute;
-    top: 36%;
-    left: 6%;
-    right: 6%;
-    bottom: 8%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-around;
-    /* gap: 8px; */
-    height: 49%;
-    /* padding: 8px; */
+  position: absolute;
+  top: 36%;
+  left: 6%;
+  right: 6%;
+  bottom: 8%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  height: 49%;
 }
 
 .gp-qtext {
-    color: #ffffff;
-    font-size: clamp(13px, 4vw, 17px);
-    font-weight: bold;
-    text-align: center;
-    direction: rtl;
-    line-height: 1.4;
-    padding: 2%;
-    background: #BD6A3B;
-    border-radius: 1vh;
+  color: #ffffff;
+  font-size: clamp(13px, 4vw, 17px);
+  font-weight: bold;
+  text-align: center;
+  direction: rtl;
+  line-height: 1.4;
+  padding: 2%;
+  background: #BD6A3B;
+  border-radius: 1vh;
 }
 
 .gp-options {
-    display: flex;
-    grid-template-columns: 1fr 1fr;
-    gap: 2vh;
-    width: 97%;
-    flex-direction: column;
+  display: flex;
+  gap: 2vh;
+  width: 97%;
+  flex-direction: column;
 }
 
 .gp-opt-btn {
-    background: #ffffff;
-    color: #BD6A3B;
-    border: 2px solid rgb(255 255 255);
-    border-radius: 2vw;
-    padding: 8px 6px;
-    font-size: clamp(12px, 4.5vw, 15px);
-    font-weight: bold;
-    font-family: 'Rubik', sans-serif;
-    cursor: pointer;
-    touch-action: manipulation;
-    transition: background 0.15s, transform 0.1s;
-    direction: rtl;
+  background: #ffffff;
+  color: #BD6A3B;
+  border: 2px solid rgb(255 255 255);
+  border-radius: 2vw;
+  padding: 8px 6px;
+  font-size: clamp(12px, 4.5vw, 15px);
+  font-weight: bold;
+  font-family: 'Rubik', sans-serif;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: background 0.15s, transform 0.1s;
+  direction: rtl;
 }
 
 .gp-opt-btn:active {
   transform: scale(0.96);
 }
 
-/* תשובה שגויה — אדום */
 .gp-opt-btn.gp-wrong {
   background: #FFD0D0;
   border-color: #C0392B;
@@ -217,7 +210,44 @@ body { font-family: 'Rubik', sans-serif; overflow: hidden; }
   100% { transform: translateX(0); }
 }
 
-/* ── מסך סיום ── */
+/* ── pause button ── */
+.gp-pause-btn {
+  position: absolute;
+  top: 10%;
+  right: 5%;
+  z-index: 10;
+  background: rgba(255,255,255,0.85);
+  border: none;
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: bold;
+  font-family: 'Rubik', sans-serif;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  touch-action: manipulation;
+}
+
+/* ── paused overlay ── */
+.gp-paused-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 8;
+}
+
+.gp-paused-text {
+  color: white;
+  font-size: 26px;
+  font-weight: bold;
+  direction: rtl;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+}
+
+/* ── game over screen ── */
 .gp-gameover {
   position: fixed;
   inset: 0;
@@ -229,6 +259,11 @@ body { font-family: 'Rubik', sans-serif; overflow: hidden; }
   gap: 24px;
   z-index: 100;
   animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
 .gp-gameover-img {
@@ -258,49 +293,182 @@ body { font-family: 'Rubik', sans-serif; overflow: hidden; }
   touch-action: manipulation;
 }
 
-.sheet-red-bar-two {
-    position: relative;
-    width: 115%;
-    background: #C0392B;
-    color: white;
-    /* font-size: clamp(12px, 12vmin, 22px); */
-    font-weight: bold;
-    text-align: center;
-    padding: 10px 16px;
-    border-radius: 8px;
-    direction: rtl;
-    white-space: nowrap;
-    /* border: solid 8px white; */
-    /* overflow: hidden; */
-    border-top: 8px solid white;
-    border-bottom: 8px solid white;
-    top: -2vh;
-}
-
+/* ── upPart decorations ── */
 .upPart {
-    filter: drop-shadow(-2px 4px 2px rgba(0, 0, 0, 0.2));
-    position: absolute;
-    width: 122%;
-    top: -39%;
-    left: -12%;
-    z-index: -11;
-    height: 305%;
-}
-.helpUpPart {
-    position: absolute;
-    width: 132%;
-    top: -58%;
-    left: -12%;
-    z-index: -9;
-    height: 110%;
-    background-color: #e3f4ff;
-}
-
-.gp-uppart {
+  filter: drop-shadow(-2px 4px 2px rgba(0,0,0,0.2));
   position: absolute;
   width: 122%;
-  top: -2%;
+  top: -39%;
   left: -12%;
-  z-index: 1;
+  z-index: -11;
+  height: 305%;
+}
+
+.helpUpPart {
+  position: absolute;
+  width: 132%;
+  top: -58%;
+  left: -12%;
+  z-index: -9;
+  height: 110%;
+  background-color: #e3f4ff;
+}
+
+/* ── intro bottom sheet ── */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  align-items: flex-end;
+}
+
+.bottom-sheet {
+    width: 100%;
+    max-width: 390px;
+    background: #E3F4FF;
+    border-radius: 47% 47% 0 0;
+    height: 83vh;
+    min-height: 75vh;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    animation: slideUp 0.35s ease-out;
+    padding-bottom: env(safe-area-inset-bottom, 16px);
+}
+
+.bottom-sheet.slide-down {
+  animation: slideDown 0.3s ease forwards;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
+
+@keyframes slideDown {
+  from { transform: translateY(0); }
+  to   { transform: translateY(110%); }
+}
+
+.drag-handle-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding-bottom: 8px;
+  cursor: grab;
+}
+
+.drag-handle {
+  width: 40px;
+  height: 4px;
+  background: #ccc;
+  border-radius: 4px;
+}
+
+.drag-hint {
+  font-size: 12px;
+  color: #aaa;
+  font-family: 'Rubik', sans-serif;
+}
+
+.sheet-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  direction: rtl;
+}
+
+.sheet-food-img {
+  width: 80px;
+  height: 80px;
+}
+
+.sheet-red-bar {
+  width: 100%;
+  background: #C0392B;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  padding: 10px 16px;
+  border-radius: 8px;
+  direction: rtl;
+  border-top: 8px solid white;
+  border-bottom: 8px solid white;
+}
+
+.sheet-text {
+    font-size: clamp(14px, 4vw, 18px);
+    color: #365582;
+    text-align: center;
+    line-height: 1.6;
+    direction: rtl;
+    font-weight: bolder;
+    position: inherit;
+    font-size: 126%;
+    position: absolute;
+    max-width: 360px;
+    top: 65%;
+}
+
+/* ── tutorial overlay ── */
+.gp-tutorial-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  pointer-events: none;
+}
+
+/* tutorial ant uses the same .gp-ant base styles */
+.gp-tut-ant {
+  /* no extra overrides needed — positioned via inline left */
+}
+
+/* finger + arrows hint bubble */
+.gp-tutorial-hint {
+  position: absolute;
+  bottom: 178px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.88);
+  border-radius: 30px;
+  padding: 5px 14px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+  white-space: nowrap;
+}
+
+.gp-tut-arrow {
+  font-size: 20px;
+  color: #BD6A3B;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.gp-tut-finger {
+  font-size: 28px;
+  line-height: 1;
+  animation: tut-bounce 0.55s ease-in-out infinite alternate;
+}
+
+@keyframes tut-bounce {
+  from { transform: translateY(0px); }
+  to   { transform: translateY(-8px); }
+}
+
+/* instruction label below hint */
+.gp-tut-label {
+  position: absolute;
+  bottom: 150px;
+  width: 100%;
+  text-align: center;
+  font-size: 15px;
+  font-weight: bold;
+  font-family: 'Rubik', sans-serif;
+  color: #365582;
+  direction: rtl;
+  text-shadow: 0 1px 6px rgba(255,255,255,0.95);
   pointer-events: none;
 }
