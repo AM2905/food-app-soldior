@@ -103,6 +103,8 @@ body { font-family: 'Rubik', sans-serif; overflow: hidden; }
     background: #E3F4FF;
     border-radius: 47% 47% 0 0;
     height: 83vh;
+        max-height: 148px;
+
     min-height: 75vh;
     overflow-x: hidden;
     overflow-y: hidden;
