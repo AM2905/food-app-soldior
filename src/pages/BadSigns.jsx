@@ -19,15 +19,13 @@ const signs = [
 ];
 
 export default function BadSigns({ onNext }) {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [doneIds, setDoneIds] = useState([]);
-  const [antText, setAntText] = useState(null);
-  const [antState, setAntState] = useState("hidden");
-  const [showNext, setShowNext] = useState(false);
-
-  const [showEndScreen, setShowEndScreen] = useState(false); // ✅ חדש
-
-  const [showIntro, setShowIntro] = useState(true);
+  const [visited, setVisited]         = useState(new Set()); // כל שנלחץ — מקבל ✓
+  const [activeIndex, setActiveIndex] = useState(0);         // רק לאנימציית shake בסדר
+  const [antText, setAntText]         = useState(null);
+  const [antState, setAntState]       = useState("hidden");
+  const [showNext, setShowNext]       = useState(false);
+  const [showEndScreen, setShowEndScreen] = useState(false);
+  const [showIntro, setShowIntro]     = useState(true);
   const [introClosing, setIntroClosing] = useState(false);
 
   const startY = useRef(null);
@@ -47,7 +45,6 @@ export default function BadSigns({ onNext }) {
     startY.current = null;
     if (delta > 60) closeIntro();
   };
-
   const onMouseDown = (e) => {
     startY.current = e.clientY;
     const onMouseUp = (ev) => {
@@ -63,16 +60,33 @@ export default function BadSigns({ onNext }) {
   const handleSignClick = (index, sign) => {
     const newText = sign.label;
 
-    if (index === activeIndex) {
-      const newDone = [...doneIds, sign.id];
-      setDoneIds(newDone);
-      setActiveIndex((prev) => prev + 1);
+    // תמיד מוסיף ✓ ללא קשר לסדר
+    setVisited((prev) => {
+      const next = new Set(prev);
+      next.add(index);
 
-      if (newDone.length === signs.length) {
+      // קדם את ה-shake: מצא את האינדקס הבא שעוד לא ביקרו בו
+      setActiveIndex((prevActive) => {
+        let candidate = prevActive;
+        if (index === prevActive) {
+          candidate = prevActive + 1;
+        }
+        // דלג על כל מה שכבר ביקרו בו
+        while (candidate < signs.length && next.has(candidate)) {
+          candidate++;
+        }
+        return candidate;
+      });
+
+      // אם זה הביקור האחרון — הצג כפתור המשך
+      if (next.size === signs.length) {
         setTimeout(() => setShowNext(true), 2000);
       }
-    }
 
+      return next;
+    });
+
+    // אנימציית הנמלה עם הטקסט
     if (antState === "visible" || antState === "entering") {
       setAntState("exiting");
       setTimeout(() => {
@@ -81,24 +95,20 @@ export default function BadSigns({ onNext }) {
         setTimeout(() => setAntState("visible"), 500);
       }, 500);
     } else {
-      setTimeout(() => {
-        setAntText(newText);
-        setAntState("entering");
-        setTimeout(() => setAntState("visible"), 500);
-      }, 0);
+      setAntText(newText);
+      setAntState("entering");
+      setTimeout(() => setAntState("visible"), 500);
     }
   };
 
   return (
     <div className="badSigns-container">
 
-      {/* ✅ מסך סיום */}
+      {/* מסך סיום */}
       {showEndScreen && (
         <div className="end-screen">
-            
           <img style={{ width: "93%", top: "4%" }} src={talkingBubble} className="logo" />
-        <p className="bubble-text">עכשיו אני צריכה לוודא שהבנתי בשביל להצליח להגיע לקן</p>
-         
+          <p className="bubble-text">עכשיו אני צריכה לוודא שהבנתי בשביל להצליח להגיע לקן</p>
           <button className="end-btn" onClick={onNext}>
             בואו נתחיל!
           </button>
@@ -113,8 +123,9 @@ export default function BadSigns({ onNext }) {
 
           <div className="signs-grid">
             {signs.map((sign, index) => {
-              const isDone = doneIds.includes(sign.id);
-              const isActive = index === activeIndex;
+              const isDone    = visited.has(index);
+              // shake רק על האינדקס הבא בתור שעוד לא ביקרו בו
+              const isActive  = index === activeIndex && !isDone;
 
               return (
                 <div
@@ -141,7 +152,7 @@ export default function BadSigns({ onNext }) {
           {showNext && (
             <button
               className="bad-next-btn"
-              onClick={() => setShowEndScreen(true)} // ✅ במקום onNext
+              onClick={() => setShowEndScreen(true)}
             >
               המשך
             </button>
@@ -162,12 +173,10 @@ export default function BadSigns({ onNext }) {
 
                 <div className="sheet-content" dir="rtl">
                   <img src={antFace} className="sheet-food-img" alt="" />
-
-                  <div className="sheet-red-bar-two" style={{whiteSpace: "normal"}}>
+                  <div className="sheet-red-bar-two" style={{ whiteSpace: "normal" }}>
                     אם את חווה אחד או יותר מהדברים הבאים אל תתעלמי, פני לבדיקה רפואית
                   </div>
-
-                  <p className="sheet-text" style={{position:"static"}}>
+                  <p className="sheet-text" style={{ position: "static" }}>
                     אלו יכולים להיות סימנים לכך שהגוף לא מקבל את מה שהוא צריך
                   </p>
                 </div>

@@ -19,9 +19,10 @@ const PLACEHOLDER_CARBS    = carbsImg;
 
 export default function GoodEatingPage({ onNext }) {
   const [selected, setSelected]       = useState(null);
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [visited, setVisited]         = useState(new Set()); // כל שנלחץ — מקבל ✓
+  const [activeIndex, setActiveIndex] = useState(0);         // רק לאנימציית pulse בסדר
   const [flipped, setFlipped]         = useState(false);
-  const [closing, setClosing]         = useState(false); // ✅ אנימציית סגירה
+  const [closing, setClosing]         = useState(false);
 
   const startY = useRef(null);
 
@@ -33,29 +34,47 @@ export default function GoodEatingPage({ onNext }) {
     { id: 3, img: orange, top: "70%", left: "50%", type: "fruits"  },
   ];
 
-  const allDone = activeIndex >= foods.length;
+  const allDone = visited.size >= foods.length;
 
   const handleClick = (index, item) => {
     setSelected(item);
     setFlipped(false);
     setClosing(false);
-    if (index === activeIndex) setActiveIndex((prev) => prev + 1);
+
+    // תמיד מוסיף ✓ ללא קשר לסדר
+    setVisited((prev) => {
+      const next = new Set(prev);
+      next.add(index);
+
+      // קדם את ה-pulse: מצא את האינדקס הבא שעוד לא ביקרו בו
+      setActiveIndex((prevActive) => {
+        let candidate = prevActive;
+        // אם לחצו על הפריט שה-pulse עליו — קדם
+        if (index === prevActive) {
+          candidate = prevActive + 1;
+        }
+        // דלג על כל מה שכבר ביקרו בו (כולל מה שרק עכשיו נוסף)
+        while (candidate < foods.length && next.has(candidate)) {
+          candidate++;
+        }
+        return candidate;
+      });
+
+      return next;
+    });
   };
 
-  // ✅ סגירה עם אנימציה
   const closeSheet = () => {
     setClosing(true);
     setTimeout(() => {
       setSelected(null);
       setFlipped(false);
       setClosing(false);
-    }, 300); // זמן האנימציה
+    }, 300);
   };
 
   // Touch
-  const onTouchStart = (e) => {
-    startY.current = e.touches[0].clientY;
-  };
+  const onTouchStart = (e) => { startY.current = e.touches[0].clientY; };
   const onTouchEnd = (e) => {
     if (startY.current === null) return;
     const delta = e.changedTouches[0].clientY - startY.current;
@@ -83,7 +102,7 @@ export default function GoodEatingPage({ onNext }) {
           <div className="sheet-content" dir="rtl">
             <img src={meal} className="sheet-food-img" alt="" />
             <div className="sheet-red-bar">לא מדלגות על ארוחות</div>
-            <p className="sheet-text">הגוף שלך עובד קשה — הוא צריך אספקה  של אנרגיה</p>
+            <p className="sheet-text">הגוף שלך עובד קשה — הוא צריך אספקה של אנרגיה</p>
             {PLACEHOLDER_CIRCLES
               ? <img src={PLACEHOLDER_CIRCLES} className="sheet-extra-img" alt="" />
               : <div className="placeholder-img">[ תמונת עיגולים ]</div>}
@@ -110,10 +129,9 @@ export default function GoodEatingPage({ onNext }) {
               </>
             ) : (
               <>
-                <p className="sheet-text">נסי לשלב מקור חלבון בכל ארוחה</p>
+                <p className="sheet-text" style={{ top: "55%" }}>נסי לשלב מקור חלבון בכל ארוחה</p>
                 {PLACEHOLDER_PROTEIN
-                  ? <img src={PLACEHOLDER_PROTEIN} style={{    left: "50%",
-    bottom: "17vh", transform:"translate(-50%)"}}className="sheet-extra-img" alt="" />
+                  ? <img src={PLACEHOLDER_PROTEIN} style={{ left: "50%", bottom: "17vh", transform: "translate(-50%)" }} className="sheet-extra-img" alt="" />
                   : <div className="placeholder-img">[ תמונת חלבון ]</div>}
                 <button className="sheet-btn sheet-btn-left" onClick={() => setFlipped(false)}>→ חזור</button>
               </>
@@ -133,9 +151,7 @@ export default function GoodEatingPage({ onNext }) {
             ) : (
               <>
                 {PLACEHOLDER_CARBS
-                  ? <img src={PLACEHOLDER_CARBS} className="sheet-extra-img" style={{    left: "50%",
-     transform:"translate(-50%)",
-    bottom: "14vh"}} alt="" />
+                  ? <img src={PLACEHOLDER_CARBS} className="sheet-extra-img" style={{ left: "50%", transform: "translate(-50%)", bottom: "14vh" }} alt="" />
                   : <div className="placeholder-img">[ תמונת פחמימות ]</div>}
                 <button className="sheet-btn sheet-btn-left" onClick={() => setFlipped(false)}>→ חזור</button>
               </>
@@ -156,16 +172,16 @@ export default function GoodEatingPage({ onNext }) {
   };
 
   return (
-    
     <div className="goodEating-container">
-          <div className="helpUpPartWork"></div>
-
+      <div className="helpUpPartWork"></div>
       <span className="up-title">דגשים לאכילה נכונה</span>
-            <span className="bad-subtitle">לחצו בשביל לגלות</span>
+      <span className="bad-subtitle">לחצו בשביל לגלות</span>
       <img src={upPart} className="upPartWork" />
 
       {foods.map((item, index) => {
-        const isDone = index < activeIndex;
+        const isDone    = visited.has(index);
+        // pulse רק על האינדקס הבא בתור שעוד לא ביקרו בו
+        const isPulsing = index === activeIndex && !isDone;
         return (
           <div
             key={item.id}
@@ -173,7 +189,7 @@ export default function GoodEatingPage({ onNext }) {
             style={{ position: "absolute", top: item.top, left: item.left }}
             onClick={() => handleClick(index, item)}
           >
-            <img src={item.img} className={`food ${index === activeIndex ? "pulse" : ""}`} />
+            <img src={item.img} className={`food ${isPulsing ? "pulse" : ""}`} />
             {isDone && <img src={check} className="check-icon" />}
           </div>
         );
@@ -198,7 +214,7 @@ export default function GoodEatingPage({ onNext }) {
             boxShadow: "0 5px 15px rgba(0,0,0,0.3)",
             direction: "rtl",
             touchAction: "manipulation",
-            fontFamily: "'Rubik', sans-serif"
+            fontFamily: "'Rubik', sans-serif",
           }}
         >
           המשך

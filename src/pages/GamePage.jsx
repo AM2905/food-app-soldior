@@ -19,7 +19,8 @@ import shoe     from "../assets/scary-shoe.svg";
 const GOOD_IMGS = [meal, meat, orange];
 const BAD_IMGS  = [spider, sandwich, shoe];
 
-const QUESTIONS = [
+// ── מאגר כל השאלות ──
+const ALL_QUESTIONS = [
   {
     q: "למה לא לדלג על ארוחות?",
     options: ["כדי לרדת במשקל", "כדי לספק אנרגיה קבועה לגוף", "כדי לחסוך זמן", "כדי לשפר מצב רוח"],
@@ -27,27 +28,108 @@ const QUESTIONS = [
   },
   {
     q: "למה חטיף לא מחליף ארוחה?",
-    options: ["הוא לא טעים", "יש בו יותר קלוריות", "הוא לא מספק את מה שהגוף צריך", "הוא גורם להשמנה"],
+    options: ["כי הוא לא טעים", "כי הוא יקר", "כי הוא לא מספק את כל מה שהגוף צריך", "כי הוא משמין"],
     correct: 2,
   },
   {
-    q: "מה תפקיד החלבון?",
-    options: ["אנרגיה בלבד", "בניית שריר והתאוששות", "ריכוז בלבד", "שובע בלבד"],
+    q: "מה החשיבות של חלבון בתזונה?",
+    options: ["מספק טעם לאוכל", "עוזר לבניית שריר והתאוששות", "מחליף פחמימות", "גורם לעייפות"],
     correct: 1,
   },
   {
-    q: "מה קורה כשחסרות פחמימות?",
-    options: ["יותר כוח", "יותר אנרגיה", "עייפות וסיכון לפציעות", "אין השפעה"],
+    q: "למה חשוב לא לוותר על פחמימות?",
+    options: ["כי הן טעימות", "כי הן מקור האנרגיה המרכזי", "כי הן זולות", "כי הן משביעות בלבד"],
+    correct: 1,
+  },
+  {
+    q: "מה יכול לקרות כשלא אוכלים מספיק פחמימות?",
+    options: ["יותר אנרגיה", "יותר כוח", "עייפות וסיכון לפציעות", "שיפור ביצועים"],
     correct: 2,
   },
   {
-    q: "איזה סימן דורש בדיקה?",
-    options: ["רעב אחרי אימון", "עייפות קלה", "שינוי משמעותי במשקל", "רצון למתוק"],
+    q: "כמה ארוחות מומלץ לאכול ביום?",
+    options: ["ארוחה אחת", "שתי ארוחות", "שלוש ארוחות בלבד", "שלוש ארוחות עיקריות ועוד ביניים"],
+    correct: 3,
+  },
+  {
+    q: "מה עושים אם לא אהבת מנה מסוימת?",
+    options: ["מדלגים על הארוחה", "מחליפים בחטיף", "משלימים בהמשך היום", "מפסיקים לאכול"],
+    correct: 2,
+  },
+  {
+    q: "למה חשוב לשלב חלבון בכל ארוחה?",
+    options: ["כדי לשפר טעם", "כדי למנוע רעב בלבד", "כדי לעזור לבנייה והתאוששות", "כדי לחסוך זמן"],
+    correct: 2,
+  },
+  {
+    q: "מה נכון לגבי האוכל בצבא?",
+    options: ["תמיד כמו בבית", "תמיד לא טעים", "לא תמיד מה שאוהבים", "לא חשוב בכלל"],
+    correct: 2,
+  },
+  {
+    q: "מה המטרה בתזונה במהלך ההכשרה?",
+    options: ["להיות מושלמת", "לאכול כמה שפחות", "לעשות הכי טוב שאפשר עם מה שיש", "לרדת במשקל"],
+    correct: 2,
+  },
+  {
+    q: "מה יכולה לגרום דילוג על ארוחה?",
+    options: ["שיפור ביצועים", "יותר כוח", "ירידה באנרגיה", "שיפור ריכוז"],
+    correct: 2,
+  },
+  {
+    q: "למה הגוף צריך 'דלק מתאים'?",
+    options: ["כדי להיראות טוב", "כדי להתמודד עם עומס ואימונים", "כדי לאכול פחות", "כדי לישון יותר"],
+    correct: 1,
+  },
+  {
+    q: "מה קורה אם אוכלים רק חטיפים?",
+    options: ["מקבלים כל מה שצריך", "הגוף מתפקד טוב יותר", "חסרים רכיבים חשובים", "אין השפעה"],
+    correct: 2,
+  },
+  {
+    q: "איזה סימן דורש תשומת לב?",
+    options: ["רעב אחרי אימון", "עייפות קלה", "שינוי משמעותי במשקל", "רצון לנוח"],
+    correct: 2,
+  },
+  {
+    q: "מה יכול להעיד על בעיה תזונתית?",
+    options: ["שובע", "אנרגיה", "הפסקת מחזור", "תיאבון טוב"],
+    correct: 2,
+  },
+  {
+    q: "מה עושים כשמרגישים עייפות קיצונית?",
+    options: ["מתעלמים", "ממשיכים כרגיל", "פונים לבדיקה", "מפסיקים לאכול"],
+    correct: 2,
+  },
+  {
+    q: "למה חשוב לאכול גם ארוחות ביניים?",
+    options: ["כדי לאכול יותר", "כדי לשמור על אנרגיה לאורך היום", "כדי לעלות במשקל", "כי זה חובה"],
+    correct: 1,
+  },
+  {
+    q: "מה הסיכון באכילה לא מספקת?",
+    options: ["שיפור ביצועים", "פחות עייפות", "פציעות וחולשה", "יותר כוח"],
+    correct: 2,
+  },
+  {
+    q: "למה חשוב לשים לב לגוף?",
+    options: ["כדי לאכול פחות", "כדי להתעלם מתסמינים", "כדי לזהות סימני אזהרה", "כדי לחסוך זמן"],
+    correct: 2,
+  },
+  {
+    q: "מה הכי נכון לגבי תזונה בהכשרה?",
+    options: ["חייבים להיות מושלמים", "עדיף לא לאכול", "עושים הכי טוב שאפשר", "לא משנה מה אוכלים"],
     correct: 2,
   },
 ];
 
-const TOTAL_Q    = 5; // game ends after exactly 5 correct answers
+// ── בוחר 5 שאלות רנדומליות ──
+function pickRandomQuestions(count = 5) {
+  const shuffled = [...ALL_QUESTIONS].sort(() => Math.random() - 0.5);
+  return shuffled.slice(0, count);
+}
+
+const TOTAL_Q    = 5;
 const GAME_W     = 390;
 const ANT_W      = 80;
 const ITEM_SIZE  = 65;
@@ -68,6 +150,9 @@ function newItem() {
 }
 
 export default function GamePage({ onNext, onHome }) {
+  // השאלות נבחרות פעם אחת כשהקומפוננטה עולה
+  const [questions] = useState(() => pickRandomQuestions(TOTAL_Q));
+
   const [antX, setAntX]                 = useState(GAME_W / 2 - ANT_W / 2);
   const [items, setItems]                = useState([newItem()]);
   const [question, setQuestion]          = useState(null);
@@ -94,9 +179,9 @@ export default function GamePage({ onNext, onHome }) {
   const tutDone         = useRef(false);
   const showTutorialRef = useRef(false);
 
-  useEffect(() => { antXRef.current        = antX;        }, [antX]);
-  useEffect(() => { qIndexRef.current      = qIndex;      }, [qIndex]);
-  useEffect(() => { scoreRef.current       = score;       }, [score]);
+  useEffect(() => { antXRef.current         = antX;         }, [antX]);
+  useEffect(() => { qIndexRef.current       = qIndex;       }, [qIndex]);
+  useEffect(() => { scoreRef.current        = score;        }, [score]);
   useEffect(() => { showTutorialRef.current = showTutorial; }, [showTutorial]);
 
   // ── tutorial animation ──
@@ -199,8 +284,8 @@ export default function GamePage({ onNext, onHome }) {
 
           if (caughtGood) {
             pausedRef.current = true;
-            const qi = qIndexRef.current % QUESTIONS.length;
-            setQuestion({ ...QUESTIONS[qi], idx: qi });
+            const qi = qIndexRef.current % questions.length;
+            setQuestion({ ...questions[qi], idx: qi });
             setWrong(null);
             setTimeout(() => setQVisible(true), 50);
           }
@@ -215,7 +300,7 @@ export default function GamePage({ onNext, onHome }) {
 
     frameRef.current = requestAnimationFrame(loop);
     return () => cancelAnimationFrame(frameRef.current);
-  }, [gameOver]);
+  }, [gameOver, questions]);
 
   // ── drag handlers ──
   const onTouchStart = useCallback((e) => {
@@ -258,7 +343,7 @@ export default function GamePage({ onNext, onHome }) {
 
     if (optIdx !== question.correct) {
       setWrong(optIdx);
-      return; // stay on question until correct
+      return;
     }
 
     const newScore   = Math.min(TOTAL_Q, scoreRef.current + 1);
