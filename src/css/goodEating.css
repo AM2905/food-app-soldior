@@ -188,11 +188,11 @@ body { font-family: 'Rubik', sans-serif; overflow: hidden; }
 
 /* תמונה נוספת */
 .sheet-extra-img {
-    width:40vh;
-    /* max-width: 320px; */
+    width: 40vh;
+    max-width: 320px;
     /* border-radius: 12px; */
     /* position: relative; */
-    left: 0;
+    left: 3%;
     bottom: 0;
     position: absolute;
 }

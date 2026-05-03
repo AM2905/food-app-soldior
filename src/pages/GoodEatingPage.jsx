@@ -102,7 +102,7 @@ export default function GoodEatingPage({ onNext }) {
           <div className="sheet-content" dir="rtl">
             <img src={meal} className="sheet-food-img" alt="" />
             <div className="sheet-red-bar">לא מדלגות על ארוחות</div>
-            <p className="sheet-text">הגוף שלך עובד קשה — הוא צריך אספקה של אנרגיה</p>
+            <p className="sheet-text" style={{    top: "58vh"}}>הגוף שלך עובד קשה — הוא צריך אספקה של אנרגיה</p>
             {PLACEHOLDER_CIRCLES
               ? <img src={PLACEHOLDER_CIRCLES} className="sheet-extra-img" alt="" />
               : <div className="placeholder-img">[ תמונת עיגולים ]</div>}
@@ -151,7 +151,7 @@ export default function GoodEatingPage({ onNext }) {
             ) : (
               <>
                 {PLACEHOLDER_CARBS
-                  ? <img src={PLACEHOLDER_CARBS} className="sheet-extra-img" style={{ left: "50%", transform: "translate(-50%)", bottom: "14vh" }} alt="" />
+                  ? <img src={PLACEHOLDER_CARBS} className="sheet-extra-img" style={{     width: "30vh",left: "50%", transform: "translate(-50%)", bottom: "14vh" }} alt="" />
                   : <div className="placeholder-img">[ תמונת פחמימות ]</div>}
                 <button className="sheet-btn sheet-btn-left" onClick={() => setFlipped(false)}>→ חזור</button>
               </>
