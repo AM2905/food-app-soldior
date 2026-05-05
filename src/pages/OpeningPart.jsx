@@ -5,22 +5,21 @@ import thirdBg from "../assets/after-video.svg";
 import finalBg from "../assets/ant-talks-background.svg";
 import talkingBubble from "../assets/talking-bubble.svg";
 
+const VIDEO_STOP_TIME = 36; // שניות
+
 export default function OpeningPart({ onNext }) {
-  const [started, setStarted] = useState(false);
-  const [videoEnded, setVideoEnded] = useState(false);
+  const [started, setStarted]               = useState(false);
+  const [isPaused, setIsPaused]             = useState(false);
+  const [videoEnded, setVideoEnded]         = useState(false);
   const [showNextScreen, setShowNextScreen] = useState(false);
   const [showFinalScreen, setShowFinalScreen] = useState(false);
-  const [buttonClicked, setButtonClicked] = useState(false);
-  const [debugLog, setDebugLog] = useState("");
+  const [buttonClicked, setButtonClicked]   = useState(false);
+  const [progress, setProgress]             = useState(0);
+  const [remaining, setRemaining]           = useState(VIDEO_STOP_TIME);
 
-  const videoRef = useRef(null);
-  const videoEndedRef = useRef(false);
+  const videoRef         = useRef(null);
+  const videoEndedRef    = useRef(false);
   const fallbackTimerRef = useRef(null);
-
-  const log = (msg) => {
-    console.log(msg);
-    setDebugLog(prev => prev + "\n" + msg);
-  };
 
   useEffect(() => {
     const img = new Image();
@@ -30,59 +29,86 @@ export default function OpeningPart({ onNext }) {
   const triggerVideoEnd = () => {
     if (videoEndedRef.current) return;
     videoEndedRef.current = true;
-    log("✅ triggerVideoEnd");
     if (fallbackTimerRef.current) {
       clearTimeout(fallbackTimerRef.current);
       fallbackTimerRef.current = null;
     }
     const v = videoRef.current;
     if (v) v.pause();
+    setProgress(100);
+    setRemaining(0);
     setVideoEnded(true);
-    log("✅ setVideoEnded(true) called");
+  };
+
+  // הפעלת הטיימר הנותר לפי הזמן שנשאר בסרטון
+  const scheduleTimer = (remainingMs) => {
+    if (fallbackTimerRef.current) clearTimeout(fallbackTimerRef.current);
+    fallbackTimerRef.current = setTimeout(() => {
+      triggerVideoEnd();
+    }, remainingMs + 300);
   };
 
   const handleTimeUpdate = () => {
     const v = videoRef.current;
-    if (!v) return;
-    if (v.currentTime >= 46) triggerVideoEnd();
+    if (!v || videoEndedRef.current) return;
+    const pct = Math.min((v.currentTime / VIDEO_STOP_TIME) * 100, 100);
+    const rem = Math.max(0, VIDEO_STOP_TIME - v.currentTime);
+    setProgress(pct);
+    setRemaining(rem);
+    // הכפתור יופיע רק אם הסרטון הגיע ל-36 שניות בזמן ריצה
+    if (v.currentTime >= VIDEO_STOP_TIME) triggerVideoEnd();
   };
 
-  const handleVideoEnded = () => {
-    log("🎬 onEnded");
-    triggerVideoEnd();
-  };
-
-  const handleLoadedMetadata = () => {
-    const v = videoRef.current;
-    log(`📐 duration: ${v?.duration}`);
-  };
+  const handleVideoEnded = () => triggerVideoEnd();
 
   const handleStart = async () => {
     setStarted(true);
     const video = videoRef.current;
-    if (!video) { log("❌ no videoRef"); return; }
-    log("▶️ handleStart");
-
+    if (!video) return;
     try {
       await video.play();
-      log("▶️ play() ok");
-      const targetTime = Math.min(46, video.duration || 46);
-      const msUntilTarget = (targetTime - (video.currentTime || 0)) * 1000;
-      log(`⏳ timer: ${Math.round(msUntilTarget / 1000)}s`);
-      fallbackTimerRef.current = setTimeout(() => {
-        log("⏰ setTimeout fired");
-        triggerVideoEnd();
-      }, msUntilTarget + 500);
+      setIsPaused(false);
+      // טיימר גיבוי לפי הזמן שנותר
+      const msLeft = (VIDEO_STOP_TIME - (video.currentTime || 0)) * 1000;
+      scheduleTimer(msLeft);
     } catch (e) {
-      log("❌ " + e);
+      console.error(e);
     }
   };
 
-  const handleContinue = () => setShowNextScreen(true);
+  // לחיצה על הסרטון — עצור/המשך
+  const handleVideoTap = () => {
+    const v = videoRef.current;
+    if (!v || videoEndedRef.current) return;
+
+    if (v.paused) {
+      // ממשיכים — מתזמנים טיימר לפי הזמן שנותר
+      v.play();
+      setIsPaused(false);
+      const msLeft = (VIDEO_STOP_TIME - v.currentTime) * 1000;
+      scheduleTimer(msLeft);
+    } else {
+      // עוצרים — מבטלים את הטיימר כדי שלא יירה בזמן ההשהיה
+      v.pause();
+      setIsPaused(true);
+      if (fallbackTimerRef.current) {
+        clearTimeout(fallbackTimerRef.current);
+        fallbackTimerRef.current = null;
+      }
+    }
+  };
+
+  const handleContinue      = () => setShowNextScreen(true);
   const handleFinalContinue = () => setShowFinalScreen(true);
-  const handleButtonClick = () => {
+  const handleButtonClick   = () => {
     if (buttonClicked) onNext();
     else setButtonClicked(true);
+  };
+
+  const fmt = (sec) => {
+    const m = Math.floor(sec / 60);
+    const s = Math.floor(sec % 60);
+    return `${m}:${s.toString().padStart(2, "0")}`;
   };
 
   return (
@@ -92,33 +118,40 @@ export default function OpeningPart({ onNext }) {
         ref={videoRef}
         src={videoFile}
         playsInline
-        
         preload="auto"
         onTimeUpdate={handleTimeUpdate}
         onEnded={handleVideoEnded}
-        onLoadedMetadata={handleLoadedMetadata}
         style={{
           opacity: started && !showNextScreen ? 1 : 0,
           transition: "opacity 0.4s ease",
           position: "absolute",
           width: "100%", height: "100%",
           objectFit: "cover",
-          zIndex: 0
+          zIndex: 0,
         }}
       />
+
+      {/* אזור לחיצה לעצור/להמשיך */}
+      {started && !videoEnded && !showNextScreen && (
+        <div className="op-video-tap-area" onClick={handleVideoTap}>
+          {isPaused && (
+            <div className="op-pause-indicator">▶</div>
+          )}
+        </div>
+      )}
 
       <div className="background-image" style={{
         backgroundImage: `url(${thirdBg})`,
         opacity: showNextScreen && !showFinalScreen ? 1 : 0,
         transition: "opacity 0.4s ease",
-        position: "absolute", width: "100%", height: "100%", zIndex: 0
+        position: "absolute", width: "100%", height: "100%", zIndex: 0,
       }} />
 
       <div className="background-image" style={{
         backgroundImage: `url(${finalBg})`,
         opacity: showFinalScreen ? 1 : 0,
         transition: "opacity 0.4s ease",
-        position: "absolute", width: "100%", height: "100%", zIndex: 0
+        position: "absolute", width: "100%", height: "100%", zIndex: 0,
       }} />
 
       {/* START */}
@@ -128,44 +161,30 @@ export default function OpeningPart({ onNext }) {
         </button>
       )}
 
-      {/* DEBUG LOG */}
-      {started && !videoEnded && (
-        <div style={{
-          position: "absolute", top: 0, left: 0, right: 0,
-          background: "rgba(0,0,0,0.75)", color: "lime",
-          fontSize: "12px", padding: "8px", zIndex: 9999,
-          whiteSpace: "pre-wrap", maxHeight: "40%", overflowY: "auto",
-          direction: "ltr", pointerEvents: "none"
-        }}>
-          {debugLog || "waiting..."}
+      {/* PROGRESS BAR + שניות יורדות מימין */}
+      {started && !videoEnded && !showNextScreen && (
+        <div className="op-progress-container">
+          <div className="op-progress-track">
+            <div
+              className="op-progress-fill"
+              style={{ width: `${progress}%` }}
+            />
+          </div>
+          <span className="op-progress-time op-time-left">
+            {fmt(remaining)}
+          </span>
         </div>
       )}
 
       {/* SKIP BUTTON */}
-      {started && !videoEnded && (
-        <button
-          onClick={() => { log("🚨 skip"); triggerVideoEnd(); }}
-          style={{
-            position: "fixed",  // ← fixed במקום absolute
-            bottom: "10%", right: "5%",
-            zIndex: 9999,
-            background: "red",
-            color: "white", border: "3px solid white",
-            borderRadius: "10px",
-            padding: "12px 20px", fontSize: "16px",
-            touchAction: "manipulation"
-          }}
-        >
-          דלג ←
-        </button>
-      )}
+     
 
-      {/* ✅ AFTER VIDEO - כפתור המשך עם fixed position */}
+      {/* AFTER VIDEO */}
       {videoEnded && !showNextScreen && (
         <button
           onClick={handleContinue}
           style={{
-            position: "fixed",   // ← fixed במקום absolute
+            position: "fixed",
             bottom: "10%",
             left: "50%",
             transform: "translateX(-50%)",
@@ -179,22 +198,25 @@ export default function OpeningPart({ onNext }) {
             borderRadius: "50px",
             boxShadow: "0 5px 15px rgba(0,0,0,0.3)",
             direction: "rtl",
-            touchAction: "manipulation"
+            touchAction: "manipulation",
+            fontFamily: "'Rubik', sans-serif",
           }}
         >
           המשך
         </button>
       )}
 
-      {/* SECOND SCREEN BUTTON */}
+      {/* SECOND SCREEN */}
       {showNextScreen && !showFinalScreen && (
         <button
           onClick={handleFinalContinue}
           className="next-button"
           style={{
-             height: "14%",
-            bottom: "5%", fontSize: "140%"
-,    maxWidth: "390px",whiteSpace: "nowrap",
+            height: "14%",
+            bottom: "5%",
+            fontSize: "140%",
+            maxWidth: "390px",
+            whiteSpace: "nowrap",
           }}
         >
           בואו תראו מה קרה לה...
@@ -207,7 +229,7 @@ export default function OpeningPart({ onNext }) {
           <div style={{
             position: "absolute", top: "12%", width: "82%",
             textAlign: "center", fontWeight: "bold",
-            color: "#5791EF", fontSize: "140%", zIndex: 2,direction:"rtl"
+            color: "#5791EF", fontSize: "140%", zIndex: 2, direction: "rtl",
           }}>
             {buttonClicked
               ? "תוכלו לעזור לי ללמוד איך לאכול טוב, בשביל שיהיה לי כוח לסחוב את האוכל לקן?"
