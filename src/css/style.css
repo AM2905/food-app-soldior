@@ -6,10 +6,7 @@
   box-sizing: border-box;
 }
 
-body {
-  font-family: 'Rubik', sans-serif;
-  overflow: hidden;
-}
+/* ── לא נוגעים ל-body כאן — App.css אחראי על זה ── */
 
 /* ── PAGES ── */
 .firstPage-container {
@@ -183,7 +180,6 @@ body {
   align-items: center;
   gap: 10px;
   z-index: 9999;
-  /* skip button sits above so pointer events pass through */
   pointer-events: none;
 }
 
@@ -203,7 +199,6 @@ body {
   transition: width 0.25s linear;
 }
 
-/* שניות יורדות — מימין לבר */
 .op-progress-time {
   color: white;
   font-size: 15px;
