@@ -9,11 +9,14 @@ import end from "./pages/end.jsx";
 
 const pages = [FirstPage, OpeningPart, GoodEatingPage, BadSigns, gamePage, end, FirstPage];
 
-// האם הדפדפן תומך ב-Fullscreen API (Android כן, iOS לא)
-const supportsFullscreen = !!document.documentElement.requestFullscreen;
+// תמיכה גם ב-webkit (Safari/iOS בתוך iframe כמו Genially)
+const el = document.documentElement;
+const supportsFullscreen =
+  !!el.requestFullscreen ||
+  !!el.webkitRequestFullscreen;
 
 function App() {
-  const [pageIndex, setPageIndex]     = useState(0);
+  const [pageIndex, setPageIndex]       = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
 
   const CurrentPage = pages[pageIndex];
@@ -21,22 +24,31 @@ function App() {
   const onHome      = () => setPageIndex(i => i - 2);
   const onFirstPage = () => setPageIndex(1);
 
-  // עדכון state כשמשתמש לוחץ Escape
   useEffect(() => {
     if (!supportsFullscreen) return;
-    const handler = () => setIsFullscreen(!!document.fullscreenElement);
+    const handler = () =>
+      setIsFullscreen(!!(document.fullscreenElement || document.webkitFullscreenElement));
     document.addEventListener("fullscreenchange", handler);
-    return () => document.removeEventListener("fullscreenchange", handler);
+    document.addEventListener("webkitfullscreenchange", handler);
+    return () => {
+      document.removeEventListener("fullscreenchange", handler);
+      document.removeEventListener("webkitfullscreenchange", handler);
+    };
   }, []);
 
   const toggleFullscreen = useCallback(async () => {
     if (!supportsFullscreen) return;
     try {
-      if (!document.fullscreenElement) {
-        await document.documentElement.requestFullscreen();
+      const isIn = !!(document.fullscreenElement || document.webkitFullscreenElement);
+      if (!isIn) {
+        // כניסה למסך מלא — עם webkit fallback לסafari
+        if (el.requestFullscreen)        await el.requestFullscreen();
+        else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
         setIsFullscreen(true);
       } else {
-        await document.exitFullscreen();
+        // יציאה
+        if (document.exitFullscreen)             await document.exitFullscreen();
+        else if (document.webkitExitFullscreen)  document.webkitExitFullscreen();
         setIsFullscreen(false);
       }
     } catch (e) {
@@ -46,7 +58,6 @@ function App() {
 
   return (
     <div className="app">
-      {/* הכפתור מוצג רק אם הדפדפן תומך (Android/Desktop) */}
       {supportsFullscreen && (
         <button
           className="fullscreen-btn"
