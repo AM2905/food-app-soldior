@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import "./css/App.css";
 import FirstPage from "./pages/FirstPage.jsx";
 import OpeningPart from "./pages/OpeningPart.jsx";
@@ -7,10 +7,13 @@ import BadSigns from "./pages/BadSigns.jsx";
 import gamePage from "./pages/GamePage.jsx";
 import end from "./pages/end.jsx";
 
-const pages = [FirstPage, GoodEatingPage, OpeningPart, GoodEatingPage, BadSigns, gamePage, end, FirstPage];
+const pages = [FirstPage, OpeningPart, GoodEatingPage, BadSigns, gamePage, end, FirstPage];
+
+// האם הדפדפן תומך ב-Fullscreen API (Android כן, iOS לא)
+const supportsFullscreen = !!document.documentElement.requestFullscreen;
 
 function App() {
-  const [pageIndex, setPageIndex] = useState(0);
+  const [pageIndex, setPageIndex]     = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
 
   const CurrentPage = pages[pageIndex];
@@ -18,7 +21,16 @@ function App() {
   const onHome      = () => setPageIndex(i => i - 2);
   const onFirstPage = () => setPageIndex(1);
 
+  // עדכון state כשמשתמש לוחץ Escape
+  useEffect(() => {
+    if (!supportsFullscreen) return;
+    const handler = () => setIsFullscreen(!!document.fullscreenElement);
+    document.addEventListener("fullscreenchange", handler);
+    return () => document.removeEventListener("fullscreenchange", handler);
+  }, []);
+
   const toggleFullscreen = useCallback(async () => {
+    if (!supportsFullscreen) return;
     try {
       if (!document.fullscreenElement) {
         await document.documentElement.requestFullscreen();
@@ -28,28 +40,22 @@ function App() {
         setIsFullscreen(false);
       }
     } catch (e) {
-      // iOS Safari doesn't support fullscreen API — hide the button gracefully
-      console.warn("Fullscreen not supported:", e);
+      console.warn("Fullscreen error:", e);
     }
-  }, []);
-
-  // sync state if user presses Escape key
-  React.useEffect(() => {
-    const handler = () => setIsFullscreen(!!document.fullscreenElement);
-    document.addEventListener("fullscreenchange", handler);
-    return () => document.removeEventListener("fullscreenchange", handler);
   }, []);
 
   return (
     <div className="app">
-      <button
-        className="fullscreen-btn"
-        onClick={toggleFullscreen}
-        title={isFullscreen ? "יציאה ממסך מלא" : "מסך מלא"}
-        aria-label={isFullscreen ? "יציאה ממסך מלא" : "מסך מלא"}
-      >
-        {isFullscreen ? "✕" : "⛶"}
-      </button>
+      {/* הכפתור מוצג רק אם הדפדפן תומך (Android/Desktop) */}
+      {supportsFullscreen && (
+        <button
+          className="fullscreen-btn"
+          onClick={toggleFullscreen}
+          aria-label={isFullscreen ? "exit fullscreen" : "fullscreen"}
+        >
+          {isFullscreen ? "✕" : "⛶"}
+        </button>
+      )}
       <CurrentPage onNext={goNext} onHome={onHome} onFirstPage={onFirstPage} />
     </div>
   );

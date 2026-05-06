@@ -8,14 +8,14 @@ html, body {
 .app {
   width: 100%;
   max-width: 370px;
-  height: 100vh;    /* fallback */
-  height: 100dvh;   /* dynamic — מתחשב בשורת הכתובת של iOS/Chrome */
+  height: 100vh;   /* fallback */
+  height: 100dvh;  /* dynamic — מתחשב בשורת הכתובת של iOS/Chrome */
   margin: 0 auto;
   position: relative;
   overflow: hidden;
 }
 
-/* ── כפתור מסך מלא ── */
+/* ── כפתור מסך מלא — מוצג רק על Android/Desktop ── */
 .fullscreen-btn {
   position: absolute;
   top: 10px;
@@ -25,7 +25,7 @@ html, body {
   height: 36px;
   border-radius: 8px;
   border: none;
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
   color: white;
@@ -35,12 +35,12 @@ html, body {
   align-items: center;
   justify-content: center;
   touch-action: manipulation;
-  transition: background 0.2s;
+  transition: background 0.2s, transform 0.1s;
   text-shadow: 0 1px 4px rgba(0,0,0,0.4);
   box-shadow: 0 2px 8px rgba(0,0,0,0.15);
 }
 
 .fullscreen-btn:active {
-  background: rgba(255, 255, 255, 0.45);
-  transform: scale(0.93);
+  background: rgba(0, 0, 0, 0.5);
+  transform: scale(0.9);
 }
