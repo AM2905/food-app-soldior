@@ -1,17 +1,16 @@
-body {
+html, body {
   margin: 0;
+  padding: 0;
+  height: 100%;
   font-family: 'Rubik', sans-serif;
-  /* background-color: aqua; */
-
- 
 }
 
 .app {
   width: 100%;
   max-width: 370px;
-  height: 100vh;
-
-  margin: 0 auto; /* ⭐ THIS is the correct centering */
+  height: 100vh;       /* fallback */
+  height: 100dvh;      /* ✅ dynamic — מתחשב בשורת הכתובת של iOS/Chrome */
+  margin: 0 auto;
   position: relative;
   overflow: hidden;
 }
