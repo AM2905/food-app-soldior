@@ -8,9 +8,39 @@ html, body {
 .app {
   width: 100%;
   max-width: 370px;
-  height: 100vh;       /* fallback */
-  height: 100dvh;      /* ✅ dynamic — מתחשב בשורת הכתובת של iOS/Chrome */
+  height: 100vh;    /* fallback */
+  height: 100dvh;   /* dynamic — מתחשב בשורת הכתובת של iOS/Chrome */
   margin: 0 auto;
   position: relative;
   overflow: hidden;
+}
+
+/* ── כפתור מסך מלא ── */
+.fullscreen-btn {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 99999;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  border: none;
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  touch-action: manipulation;
+  transition: background 0.2s;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.4);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.fullscreen-btn:active {
+  background: rgba(255, 255, 255, 0.45);
+  transform: scale(0.93);
 }
