@@ -19,8 +19,8 @@ const PLACEHOLDER_CARBS    = carbsImg;
 
 export default function GoodEatingPage({ onNext }) {
   const [selected, setSelected]       = useState(null);
-  const [visited, setVisited]         = useState(new Set()); // כל שנלחץ — מקבל ✓
-  const [activeIndex, setActiveIndex] = useState(0);         // רק לאנימציית pulse בסדר
+  const [visited, setVisited]         = useState(new Set());
+  const [activeIndex, setActiveIndex] = useState(0);
   const [flipped, setFlipped]         = useState(false);
   const [closing, setClosing]         = useState(false);
 
@@ -41,22 +41,14 @@ export default function GoodEatingPage({ onNext }) {
     setFlipped(false);
     setClosing(false);
 
-    // תמיד מוסיף ✓ ללא קשר לסדר
     setVisited((prev) => {
       const next = new Set(prev);
       next.add(index);
 
-      // קדם את ה-pulse: מצא את האינדקס הבא שעוד לא ביקרו בו
       setActiveIndex((prevActive) => {
         let candidate = prevActive;
-        // אם לחצו על הפריט שה-pulse עליו — קדם
-        if (index === prevActive) {
-          candidate = prevActive + 1;
-        }
-        // דלג על כל מה שכבר ביקרו בו (כולל מה שרק עכשיו נוסף)
-        while (candidate < foods.length && next.has(candidate)) {
-          candidate++;
-        }
+        if (index === prevActive) candidate = prevActive + 1;
+        while (candidate < foods.length && next.has(candidate)) candidate++;
         return candidate;
       });
 
@@ -73,7 +65,6 @@ export default function GoodEatingPage({ onNext }) {
     }, 300);
   };
 
-  // Touch
   const onTouchStart = (e) => { startY.current = e.touches[0].clientY; };
   const onTouchEnd = (e) => {
     if (startY.current === null) return;
@@ -82,7 +73,6 @@ export default function GoodEatingPage({ onNext }) {
     if (delta > 60) closeSheet();
   };
 
-  // Mouse
   const onMouseDown = (e) => {
     startY.current = e.clientY;
     const onMouseUp = (ev) => {
@@ -102,7 +92,7 @@ export default function GoodEatingPage({ onNext }) {
           <div className="sheet-content" dir="rtl">
             <img src={meal} className="sheet-food-img" alt="" />
             <div className="sheet-red-bar">לא מדלגות על ארוחות</div>
-            <p className="sheet-text" style={{    top: "58vh"}}>הגוף שלך עובד קשה — הוא צריך אספקה של אנרגיה</p>
+            <p className="sheet-text" style={{ top: "58vh" }}>הגוף שלך עובד קשה — הוא צריך אספקה של אנרגיה</p>
             {PLACEHOLDER_CIRCLES
               ? <img src={PLACEHOLDER_CIRCLES} className="sheet-extra-img" alt="" />
               : <div className="placeholder-img">[ תמונת עיגולים ]</div>}
@@ -151,7 +141,7 @@ export default function GoodEatingPage({ onNext }) {
             ) : (
               <>
                 {PLACEHOLDER_CARBS
-                  ? <img src={PLACEHOLDER_CARBS} className="sheet-extra-img" style={{     width: "30vh",left: "50%", transform: "translate(-50%)", bottom: "14vh" }} alt="" />
+                  ? <img src={PLACEHOLDER_CARBS} className="sheet-extra-img" style={{ width: "30vh", left: "50%", transform: "translate(-50%)", bottom: "14vh" }} alt="" />
                   : <div className="placeholder-img">[ תמונת פחמימות ]</div>}
                 <button className="sheet-btn sheet-btn-left" onClick={() => setFlipped(false)}>→ חזור</button>
               </>
@@ -180,7 +170,6 @@ export default function GoodEatingPage({ onNext }) {
 
       {foods.map((item, index) => {
         const isDone    = visited.has(index);
-        // pulse רק על האינדקס הבא בתור שעוד לא ביקרו בו
         const isPulsing = index === activeIndex && !isDone;
         return (
           <div
@@ -232,6 +221,10 @@ export default function GoodEatingPage({ onNext }) {
             >
               <div className="drag-handle" />
               <span className="drag-hint">גררו למטה לסגירה</span>
+              {/* חץ מונפש רק בפופאפ הראשון */}
+              {selected?.type === "meal" && (
+                <span className="drag-hint-arrow">↓</span>
+              )}
             </div>
             {renderContent(selected.type)}
           </div>

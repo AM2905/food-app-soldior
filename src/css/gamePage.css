@@ -461,7 +461,7 @@ body { font-family: 'Rubik', sans-serif; overflow: hidden; }
 /* instruction label below hint */
 .gp-tut-label {
   position: absolute;
-  bottom: 150px;
+  bottom: 300px;
   width: 100%;
   text-align: center;
   font-size: 15px;
