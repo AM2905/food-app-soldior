@@ -104,7 +104,7 @@ export default function GoodEatingPage({ onNext }) {
           <div className="sheet-body" dir="rtl">
             <p className="sheet-text">הגוף שלך עובד קשה — הוא צריך אספקה של אנרגיה</p>
             {PLACEHOLDER_CIRCLES && (
-              <img src={PLACEHOLDER_CIRCLES} className="sheet-extra-img-inline" alt="" />
+              <img src={PLACEHOLDER_CIRCLES} className="sheet-extra-img-meal" alt="" />
             )}
           </div>
         );
@@ -205,7 +205,7 @@ export default function GoodEatingPage({ onNext }) {
               onMouseDown={onMouseDown}
             >
               <div className="drag-handle" />
-              <span className="drag-hint" style={{fontSize:"15px"}}>גררו למטה לסגירה</span>
+              <span className="drag-hint" style={{ fontSize: "15px" }}>גררו למטה לסגירה</span>
               {selected?.type === "meal" && (
                 <span className="drag-hint-arrow">↓</span>
               )}

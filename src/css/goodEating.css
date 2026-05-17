@@ -114,7 +114,8 @@
   padding-bottom: env(safe-area-inset-bottom, 20px);
   display: flex;
   flex-direction: column;
-      max-height: 78vh;
+  max-height: 75vh;
+  position: relative; /* ✅ נדרש לתמונת ה-meal */
 }
 
 @keyframes slideUp {
@@ -159,9 +160,6 @@
   font-weight: bold;
   direction: rtl;
 }
-
-
-
 
 /* ── חץ מונפש ── */
 .drag-hint-arrow {
@@ -209,11 +207,11 @@
 
 /* ── חלק תחתון ממורכז: טקסט + תמונה ── */
 .sheet-body {
-  flex: 1;                    /* תופס את שאר הגובה */
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;    /* ממורכז אנכית */
+  justify-content: center;
   gap: 14px;
   padding: 16px 24px;
   direction: rtl;
@@ -241,7 +239,7 @@
   font-weight: 700;
 }
 
-/* תמונה נוספת inline */
+/* תמונה נוספת inline (protein, carbs) */
 .sheet-extra-img-inline {
   width: 100%;
   max-width: 260px;
@@ -254,6 +252,18 @@
 .sheet-extra-img-small {
   max-width: 180px;
   max-height: 22vh;
+}
+
+/* ✅ תמונת meal — פינה שמאל תחתון של ה-sheet */
+.sheet-extra-img-meal {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 75%;
+  max-width: 300px;
+  height: auto;
+  object-fit: contain;
+  pointer-events: none;
 }
 
 /* placeholder */
