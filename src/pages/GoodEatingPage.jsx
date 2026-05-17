@@ -100,14 +100,14 @@ export default function GoodEatingPage({ onNext }) {
   const renderBody = (type) => {
     switch (type) {
       case "meal":
-        return (
-          <div className="sheet-body" dir="rtl">
-            <p className="sheet-text">הגוף שלך עובד קשה — הוא צריך אספקה של אנרגיה</p>
-            {PLACEHOLDER_CIRCLES && (
-              <img src={PLACEHOLDER_CIRCLES} className="sheet-extra-img-meal" alt="" />
-            )}
-          </div>
-        );
+  return (
+    <div className="sheet-body" dir="rtl" style={{ paddingBottom: "45%" }}>
+      <p className="sheet-text">הגוף שלך עובד קשה — הוא צריך אספקה של אנרגיה</p>
+      {PLACEHOLDER_CIRCLES && (
+        <img src={PLACEHOLDER_CIRCLES} className="sheet-extra-img-meal" alt="" />
+      )}
+    </div>
+  );
       case "snack":
         return (
           <div className="sheet-body" dir="rtl">
