@@ -38,7 +38,6 @@ export default function GoodEatingPage({ onNext }) {
   const handleClick = (index, item) => {
     setSelected(item);
     setClosing(false);
-
     setVisited((prev) => {
       const next = new Set(prev);
       next.add(index);
@@ -79,34 +78,45 @@ export default function GoodEatingPage({ onNext }) {
     window.addEventListener("mouseup", onMouseUp);
   };
 
-  const renderContent = (type) => {
+  // חלק עליון קבוע — תמונה + פס אדום
+  const renderTop = (type) => {
+    const imgMap = { meal, snack, protein: meat, carbs: bread, fruits: orange };
+    const titleMap = {
+      meal:    "לא מדלגות על ארוחות",
+      snack:   "לא מחליפות ארוחה בחטיפים",
+      protein: "משלבות חלבון בכל ארוחה",
+      carbs:   "לא מוותרות על פחמימות",
+      fruits:  "מקפידות לאכול פירות וירקות טריים",
+    };
+    return (
+      <div className="sheet-top" dir="rtl">
+        <img src={imgMap[type]} className="sheet-food-img" alt="" />
+        <div className="sheet-red-bar">{titleMap[type]}</div>
+      </div>
+    );
+  };
+
+  // חלק תחתון ממורכז — טקסט ותמונה נוספת
+  const renderBody = (type) => {
     switch (type) {
       case "meal":
         return (
-          <div className="sheet-content" dir="rtl">
-            <img src={meal} className="sheet-food-img" alt="" />
-            <div className="sheet-red-bar">לא מדלגות על ארוחות</div>
+          <div className="sheet-body" dir="rtl">
             <p className="sheet-text">הגוף שלך עובד קשה — הוא צריך אספקה של אנרגיה</p>
             {PLACEHOLDER_CIRCLES && (
               <img src={PLACEHOLDER_CIRCLES} className="sheet-extra-img-inline" alt="" />
             )}
           </div>
         );
-
       case "snack":
         return (
-          <div className="sheet-content" dir="rtl">
-            <img src={snack} className="sheet-food-img" alt="" />
-            <div className="sheet-red-bar">לא מחליפות ארוחה בחטיפים</div>
+          <div className="sheet-body" dir="rtl">
             <p className="sheet-text">חטיף הוא לא תחליף לארוחה. הגוף שלך צריך ארוחה מלאה ומגוונת כדי לקבל את כל רכיבי התזונה ולתפקד לאורך זמן.</p>
           </div>
         );
-
       case "protein":
         return (
-          <div className="sheet-content" dir="rtl">
-            <img src={meat} className="sheet-food-img" alt="" />
-            <div className="sheet-red-bar">משלבות חלבון בכל ארוחה</div>
+          <div className="sheet-body" dir="rtl">
             <p className="sheet-text">חלבון חיוני לבניית השריר ולהתאוששות</p>
             <p className="sheet-text sheet-text-secondary">נסי לשלב מקור חלבון בכל ארוחה</p>
             {PLACEHOLDER_PROTEIN && (
@@ -114,28 +124,21 @@ export default function GoodEatingPage({ onNext }) {
             )}
           </div>
         );
-
       case "carbs":
         return (
-          <div className="sheet-content" dir="rtl">
-            <img src={bread} className="sheet-food-img" alt="" />
-            <div className="sheet-red-bar">לא מוותרות על פחמימות</div>
+          <div className="sheet-body" dir="rtl">
             <p className="sheet-text">פחמימות הן מקור האנרגיה המרכזי שלך לאימונים ולפעילות</p>
             {PLACEHOLDER_CARBS && (
               <img src={PLACEHOLDER_CARBS} className="sheet-extra-img-inline sheet-extra-img-small" alt="" />
             )}
           </div>
         );
-
       case "fruits":
         return (
-          <div className="sheet-content" dir="rtl">
-            <img src={orange} className="sheet-food-img" alt="" />
-            <div className="sheet-red-bar">מקפידות לאכול פירות וירקות טריים</div>
+          <div className="sheet-body" dir="rtl">
             <p className="sheet-text">פירות וירקות מאפשרים התאוששות מהירה יותר אחרי פעילות והחלמה טובה יותר של הגוף מפציעות</p>
           </div>
         );
-
       default:
         return null;
     }
@@ -193,6 +196,8 @@ export default function GoodEatingPage({ onNext }) {
       {selected && (
         <div className="overlay">
           <div className={`bottom-sheet ${closing ? "slide-down" : ""}`}>
+
+            {/* ידית גרירה */}
             <div
               className="drag-handle-wrapper"
               onTouchStart={onTouchStart}
@@ -200,12 +205,18 @@ export default function GoodEatingPage({ onNext }) {
               onMouseDown={onMouseDown}
             >
               <div className="drag-handle" />
-              <span className="drag-hint">גררו למטה לסגירה</span>
+              <span className="drag-hint" style={{fontSize:"15px"}}>גררו למטה לסגירה</span>
               {selected?.type === "meal" && (
                 <span className="drag-hint-arrow">↓</span>
               )}
             </div>
-            {renderContent(selected.type)}
+
+            {/* תמונה + כותרת אדומה — תמיד למעלה */}
+            {renderTop(selected.type)}
+
+            {/* טקסט + תמונה נוספת — באמצע */}
+            {renderBody(selected.type)}
+
           </div>
         </div>
       )}
