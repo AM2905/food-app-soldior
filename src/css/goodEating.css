@@ -163,11 +163,13 @@
 
 /* ── חץ מונפש ── */
 .drag-hint-arrow {
-  font-size: 22px;
-  color: #4890C6;
-  line-height: 1;
-  font-weight: bolder;
-  animation: arrow-bounce 0.9s ease-in-out infinite;
+    font-size: 30px;
+    color: #4890C6;
+    line-height: 1;
+    font-weight: bolder;
+    animation: arrow-bounce 0.9s ease-in-out infinite;
+    font-weight: 900;
+    -webkit-text-stroke: 1.5px #365582;
 }
 
 @keyframes arrow-bounce {

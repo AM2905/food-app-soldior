@@ -7,7 +7,7 @@ import BadSigns from "./pages/BadSigns.jsx";
 import gamePage from "./pages/GamePage.jsx";
 import end from "./pages/end.jsx";
 
-const pages = [FirstPage,GoodEatingPage, OpeningPart, GoodEatingPage, BadSigns, gamePage, end, FirstPage];
+const pages = [FirstPage, OpeningPart, GoodEatingPage, BadSigns, gamePage, end, FirstPage];
 
 // תמיכה גם ב-webkit (Safari/iOS בתוך iframe כמו Genially)
 const el = document.documentElement;
