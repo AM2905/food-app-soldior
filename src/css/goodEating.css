@@ -114,6 +114,7 @@
   padding-bottom: env(safe-area-inset-bottom, 20px);
   display: flex;
   flex-direction: column;
+      max-height: 78vh;
 }
 
 @keyframes slideUp {
@@ -158,6 +159,9 @@
   font-weight: bold;
   direction: rtl;
 }
+
+
+
 
 /* ── חץ מונפש ── */
 .drag-hint-arrow {
