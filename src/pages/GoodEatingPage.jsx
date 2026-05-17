@@ -21,7 +21,6 @@ export default function GoodEatingPage({ onNext }) {
   const [selected, setSelected]       = useState(null);
   const [visited, setVisited]         = useState(new Set());
   const [activeIndex, setActiveIndex] = useState(0);
-  const [flipped, setFlipped]         = useState(false);
   const [closing, setClosing]         = useState(false);
 
   const startY = useRef(null);
@@ -38,20 +37,17 @@ export default function GoodEatingPage({ onNext }) {
 
   const handleClick = (index, item) => {
     setSelected(item);
-    setFlipped(false);
     setClosing(false);
 
     setVisited((prev) => {
       const next = new Set(prev);
       next.add(index);
-
       setActiveIndex((prevActive) => {
         let candidate = prevActive;
         if (index === prevActive) candidate = prevActive + 1;
         while (candidate < foods.length && next.has(candidate)) candidate++;
         return candidate;
       });
-
       return next;
     });
   };
@@ -60,7 +56,6 @@ export default function GoodEatingPage({ onNext }) {
     setClosing(true);
     setTimeout(() => {
       setSelected(null);
-      setFlipped(false);
       setClosing(false);
     }, 300);
   };
@@ -72,7 +67,6 @@ export default function GoodEatingPage({ onNext }) {
     startY.current = null;
     if (delta > 60) closeSheet();
   };
-
   const onMouseDown = (e) => {
     startY.current = e.clientY;
     const onMouseUp = (ev) => {
@@ -92,62 +86,47 @@ export default function GoodEatingPage({ onNext }) {
           <div className="sheet-content" dir="rtl">
             <img src={meal} className="sheet-food-img" alt="" />
             <div className="sheet-red-bar">לא מדלגות על ארוחות</div>
-            <p className="sheet-text" style={{ top: "58vh" }}>הגוף שלך עובד קשה — הוא צריך אספקה של אנרגיה</p>
-            {PLACEHOLDER_CIRCLES
-              ? <img src={PLACEHOLDER_CIRCLES} className="sheet-extra-img" alt="" />
-              : <div className="placeholder-img">[ תמונת עיגולים ]</div>}
+            <p className="sheet-text">הגוף שלך עובד קשה — הוא צריך אספקה של אנרגיה</p>
+            {PLACEHOLDER_CIRCLES && (
+              <img src={PLACEHOLDER_CIRCLES} className="sheet-extra-img-inline" alt="" />
+            )}
           </div>
         );
+
       case "snack":
         return (
           <div className="sheet-content" dir="rtl">
             <img src={snack} className="sheet-food-img" alt="" />
             <div className="sheet-red-bar">לא מחליפות ארוחה בחטיפים</div>
-            <p className="sheet-text">חטיף הוא לא תחליף לארוחה.
-               הגוף שלך צריך ארוחה מלאה ומגוונת כדי לקבל את כל רכיבי התזונה ולתפקד לאורך זמן.</p>
+            <p className="sheet-text">חטיף הוא לא תחליף לארוחה. הגוף שלך צריך ארוחה מלאה ומגוונת כדי לקבל את כל רכיבי התזונה ולתפקד לאורך זמן.</p>
           </div>
         );
+
       case "protein":
         return (
           <div className="sheet-content" dir="rtl">
             <img src={meat} className="sheet-food-img" alt="" />
             <div className="sheet-red-bar">משלבות חלבון בכל ארוחה</div>
-            {!flipped ? (
-              <>
-                <p className="sheet-text">חלבון חיוני לבניית השריר ולהתאוששות</p>
-                <button className="sheet-btn" onClick={() => setFlipped(true)}>המשך ←</button>
-              </>
-            ) : (
-              <>
-                <p className="sheet-text" style={{ top: "55%" }}>נסי לשלב מקור חלבון בכל ארוחה</p>
-                {PLACEHOLDER_PROTEIN
-                  ? <img src={PLACEHOLDER_PROTEIN} style={{ left: "50%", bottom: "17vh", transform: "translate(-50%)" }} className="sheet-extra-img" alt="" />
-                  : <div className="placeholder-img">[ תמונת חלבון ]</div>}
-                <button className="sheet-btn sheet-btn-left" onClick={() => setFlipped(false)}>→ חזור</button>
-              </>
+            <p className="sheet-text">חלבון חיוני לבניית השריר ולהתאוששות</p>
+            <p className="sheet-text sheet-text-secondary">נסי לשלב מקור חלבון בכל ארוחה</p>
+            {PLACEHOLDER_PROTEIN && (
+              <img src={PLACEHOLDER_PROTEIN} className="sheet-extra-img-inline" alt="" />
             )}
           </div>
         );
+
       case "carbs":
         return (
           <div className="sheet-content" dir="rtl">
             <img src={bread} className="sheet-food-img" alt="" />
             <div className="sheet-red-bar">לא מוותרות על פחמימות</div>
-            {!flipped ? (
-              <>
-                <p className="sheet-text">פחמימות הן מקור האנרגיה המרכזי שלך לאימונים ולפעילות</p>
-                <button className="sheet-btn" onClick={() => setFlipped(true)}>המשך ←</button>
-              </>
-            ) : (
-              <>
-                {PLACEHOLDER_CARBS
-                  ? <img src={PLACEHOLDER_CARBS} className="sheet-extra-img" style={{ width: "30vh", left: "50%", transform: "translate(-50%)", bottom: "14vh" }} alt="" />
-                  : <div className="placeholder-img">[ תמונת פחמימות ]</div>}
-                <button className="sheet-btn sheet-btn-left" onClick={() => setFlipped(false)}>→ חזור</button>
-              </>
+            <p className="sheet-text">פחמימות הן מקור האנרגיה המרכזי שלך לאימונים ולפעילות</p>
+            {PLACEHOLDER_CARBS && (
+              <img src={PLACEHOLDER_CARBS} className="sheet-extra-img-inline sheet-extra-img-small" alt="" />
             )}
           </div>
         );
+
       case "fruits":
         return (
           <div className="sheet-content" dir="rtl">
@@ -156,6 +135,7 @@ export default function GoodEatingPage({ onNext }) {
             <p className="sheet-text">פירות וירקות מאפשרים התאוששות מהירה יותר אחרי פעילות והחלמה טובה יותר של הגוף מפציעות</p>
           </div>
         );
+
       default:
         return null;
     }
@@ -221,7 +201,6 @@ export default function GoodEatingPage({ onNext }) {
             >
               <div className="drag-handle" />
               <span className="drag-hint">גררו למטה לסגירה</span>
-              {/* חץ מונפש רק בפופאפ הראשון */}
               {selected?.type === "meal" && (
                 <span className="drag-hint-arrow">↓</span>
               )}
